@@ -1,0 +1,283 @@
+---
+import "../styles/global.css";
+
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+
+interface Props {
+    title?: string;
+    description?: string;
+    ogImage?: string;
+    canonicalURL?: string;
+    author?: string;
+    noIndex?: boolean;
+}
+
+const SITE = {
+    title: "TimeCapsule — Your life in yearly snapshots",
+    description:
+        "A privacy-first tool to create year-by-year life timelines with memories, milestones, and future aspirations. Your data never leaves your browser.",
+    website: "https://timecapsule.srirams.me/", // Update with your actual domain
+    author: "TimeCapsule",
+    lang: "en",
+};
+
+const {
+    title = SITE.title,
+    description = SITE.description,
+    ogImage = "/og-image.png",
+    canonicalURL = new URL(Astro.url.pathname, Astro.url),
+    author = SITE.author,
+    noIndex = false,
+} = Astro.props;
+
+const socialImageURL = new URL(ogImage, Astro.url);
+
+// Structured data for rich results
+const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "TimeCapsule",
+    description: SITE.description,
+    url: SITE.website,
+    applicationCategory: "LifestyleApplication",
+    offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+    },
+    featureList: [
+        "Privacy-first timeline creation",
+        "Year-by-year life snapshots",
+        "Milestone tracking",
+        "Future aspirations planning",
+        "Export and share capabilities",
+    ],
+};
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="view-transition" content="same-origin" />
+
+        <!-- Favicon -->
+        <!-- Favicons -->
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="96x96"
+            href="/favicon-96x96.png"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+        />
+
+        <!-- Web App Manifest -->
+        <link rel="manifest" href="/site.webmanifest" />
+
+        <!-- Canonical URL -->
+        <link rel="canonical" href={canonicalURL} />
+
+        <!-- Generator -->
+        <meta name="generator" content={Astro.generator} />
+
+        <!-- General Meta Tags -->
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+        <meta name="author" content={author} />
+
+        <!-- Robots -->
+        {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={socialImageURL} />
+        <meta property="og:site_name" content="TimeCapsule" />
+        <meta property="og:locale" content="en_US" />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalURL} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={socialImageURL} />
+
+        <!-- PWA Meta Tags -->
+        <meta
+            name="theme-color"
+            content="#ef4444"
+            media="(prefers-color-scheme: light)"
+        />
+        <meta
+            name="theme-color"
+            content="#dc2626"
+            media="(prefers-color-scheme: dark)"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+        />
+        <meta name="apple-mobile-web-app-title" content="TimeCapsule" />
+
+        <!-- Preconnect to external domains for performance -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <!-- Google JSON-LD Structured Data -->
+        <script
+            type="application/ld+json"
+            is:inline
+            set:html={JSON.stringify(structuredData)}
+        />
+
+        {
+            // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,
+            // include google-site-verification tag in the heading
+            // Learn more: https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag
+            googleSiteVerification && (
+                <meta
+                    name="google-site-verification"
+                    content={googleSiteVerification}
+                />
+            )
+        }
+
+        <!-- Theme Toggle Script (loads before body to prevent flash) -->
+        <script is:inline>
+            // Initialize theme from localStorage or system preference
+            const getThemePreference = () => {
+                if (
+                    typeof localStorage !== "undefined" &&
+                    localStorage.getItem("theme")
+                ) {
+                    return localStorage.getItem("theme");
+                }
+                return window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light";
+            };
+
+            const isDark = getThemePreference() === "dark";
+            document.documentElement.classList[isDark ? "add" : "remove"](
+                "dark",
+            );
+
+            if (typeof localStorage !== "undefined") {
+                const observer = new MutationObserver(() => {
+                    const isDark =
+                        document.documentElement.classList.contains("dark");
+                    localStorage.setItem("theme", isDark ? "dark" : "light");
+                });
+                observer.observe(document.documentElement, {
+                    attributes: true,
+                    attributeFilter: ["class"],
+                });
+            }
+        </script>
+
+        <!-- Allow pages to inject additional head content -->
+        <slot name="head" />
+    </head>
+
+    <body>
+        <slot />
+    </body>
+</html>
+
+<style is:global>
+    /* Base HTML/Body Styles */
+    html {
+        font-family:
+            "Inter",
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            "Helvetica Neue",
+            Arial,
+            sans-serif;
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+        margin: 0;
+        width: 100%;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family:
+            "Space Grotesk",
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            sans-serif;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    /* Smooth transitions for theme changes */
+    html {
+        transition:
+            background-color 0.3s ease,
+            color 0.3s ease;
+    }
+
+    /* Focus visible for accessibility */
+    *:focus-visible {
+        outline: 2px solid rgb(var(--accent-rgb));
+        outline-offset: 2px;
+    }
+
+    /* Prevent layout shift from scrollbar */
+    html {
+        overflow-y: scroll;
+    }
+
+    /* Selection colors */
+    ::selection {
+        background-color: rgb(var(--accent-rgb) / 0.3);
+        color: inherit;
+    }
+
+    /* Better font rendering */
+    body {
+        text-rendering: optimizeLegibility;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Remove default button styles */
+    button {
+        font-family: inherit;
+    }
+
+    /* Prevent iOS zoom on input focus */
+    @supports (-webkit-touch-callout: none) {
+        input,
+        select,
+        textarea {
+            font-size: 16px;
+        }
+    }
+</style>

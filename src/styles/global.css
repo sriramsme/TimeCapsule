@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@layer base {
+    :root {
+
+        --accent-50: #fef2f2;
+        --accent-100: #fee2e2;
+        --accent-200: #fecaca;
+        --accent-300: #fca5a5;
+        --accent-400: #f87171;
+        --accent-500: #ef4444;
+        /* Primary accent color */
+        --accent-600: #dc2626;
+        --accent-700: #b91c1c;
+        --accent-800: #991b1b;
+        --accent-900: #7f1d1d;
+        --accent-950: #450a0a;
+
+        --accent-rgb: 239, 68, 68;
+        /* For rgba() usage */
+
+        --background: #ffffff;
+        --foreground: #0a0a0a;
+        --card: #ffffff;
+        --card-foreground: #0a0a0a;
+        --primary: #ef4444;
+        --primary-foreground: #ffffff;
+        --muted: #f9fafb;
+        --muted-foreground: #737373;
+        --accent: #f9fafb;
+        --accent-foreground: #0a0a0a;
+        --border: #e5e5e5;
+        --muted-foreground: #737373;
+        --radius: 0.5rem;
+    }
+
+    .dark {
+
+        --accent-50: #450a0a;
+        --accent-100: #7f1d1d;
+        --accent-200: #991b1b;
+        --accent-300: #b91c1c;
+        --accent-400: #dc2626;
+        --accent-500: #ef4444;
+        --accent-600: #f87171;
+        --accent-700: #fca5a5;
+        --accent-800: #fecaca;
+        --accent-900: #fee2e2;
+        --accent-950: #fef2f2;
+
+        --background: #0a0a0a;
+        --foreground: #fafafa;
+        --card: #171717;
+        --card-foreground: #fafafa;
+        --primary: #ef4444;
+        --primary-foreground: #ffffff;
+        --muted: #f9fafb;
+        --muted-foreground: #737373;
+        --accent: #f9fafb;
+        --accent-foreground: #0a0a0a;
+        --border: #262626;
+        --muted-foreground: #a3a3a3;
+    }
+}
+
+
+@layer base {
+    * {
+        @reference border-border;
+    }
+
+    body {
+        @reference bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+}
+
+html {
+    @reference transition-colors duration-300;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @reference bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+    @reference bg-muted-foreground/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @reference bg-muted-foreground/50;
+}

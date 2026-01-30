@@ -1,0 +1,33 @@
+---
+// src/pages/embed.astro
+// This is a dedicated embed page for iframe embeds
+// It's separate from share.astro to provide a minimal, optimized embedding experience
+
+// Import your layout (adjust path as needed)
+import Layout from "@/layouts/Layout.astro";
+
+// Import the EmbedViewer React component
+import EmbedViewer from "@/components/EmbedViewer";
+import Footer from "@/components/Footer.astro";
+const title = "TimeCapsule Embed";
+const description = "Embedded timeline view";
+---
+
+<Layout title={title}>
+    <!-- 
+    Use client:only="react" because EmbedViewer relies on browser APIs:
+    - window.location for URL parameters
+    - postMessage for auto-resize
+    - MutationObserver for height detection
+  -->
+    <EmbedViewer client:only="react" />
+</Layout>
+
+<!--
+  Alternative if you want a more minimal layout:
+  
+  Create src/layouts/EmbedLayout.astro with just the essentials,
+  then use that instead of your main Layout.
+  
+  This would give you maximum control over the embed experience.
+-->
