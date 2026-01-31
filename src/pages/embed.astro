@@ -7,9 +7,10 @@ import type { LayoutMode } from "@/types";
 
 // Import the EmbedViewer React component
 import EmbedViewer from "@/components/EmbedViewer";
+import EmbedFooter from "@/components/EmbedFooter.astro";
+
 const url = Astro.url.href;
 const searchParams = Astro.url.searchParams;
-
 const layoutMode = (searchParams.get("layout") as LayoutMode) || "masonry";
 const showMetadata = searchParams.get("showMetadata") === "true";
 
@@ -22,11 +23,12 @@ const description = "Embedded timeline view";
     Use client:only="react" because EmbedViewer relies on browser APIs:
     - window.location for URL parameters
     - postMessage for auto-resize
-    - MutationObserver for height detection
+    - ResizeObserver for height detection
   -->
   <EmbedViewer
     client:only="react"
     layoutMode={layoutMode}
     showMetadata={showMetadata}
   />
+  <EmbedFooter />
 </Layout>

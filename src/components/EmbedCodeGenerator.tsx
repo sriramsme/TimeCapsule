@@ -22,25 +22,22 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
     const generateEmbedCode = () => {
         if (useAutoResize) {
             // Auto-resize version with script
-            return `<!-- TimeCapsule Embed - Auto-Resize -->
+            return `
 <script src="https://timecapsule.srirams.me/embed-script.js"></script>
 <iframe 
   src="${embedUrl}"
   width="${embedWidth}"
-  style="border: 1px solid #e5e7eb; border-radius: 8px; min-height: 400px;"
+  style="border-radius: 2rem;"
   frameborder="0"
-  allowfullscreen
 ></iframe>`;
         } else {
             // Fixed height version
-            return `<!-- TimeCapsule Embed - Fixed Height -->
-<iframe 
+            return `<iframe 
   src="${embedUrl}"
   width="${embedWidth}"
   height="${embedHeight}px"
-  style="border: 1px solid #e5e7eb; border-radius: 8px;"
+  style="border-radius: 2rem;"
   frameborder="0"
-  allowfullscreen
 ></iframe>`;
         }
     };
@@ -65,7 +62,7 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
     };
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 text-foreground">
             <div>
                 <p className="text-sm text-muted-foreground mb-4">
                     Embed this timeline on your website. The embed will automatically match your site's theme.
@@ -73,31 +70,46 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
             </div>
 
             {/* Embed Settings */}
-            <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
-                <h4 className="text-sm font-semibold">Embed Settings</h4>
+            <div className="space-y-3 p-4 rounded-lg bg-muted/50 border border-border">
+                <h4 className="text-sm font-semibold text-foreground">
+                    Embed Settings
+                </h4>
 
                 {/* Width */}
                 <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium mb-1 text-foreground">
                         Width
                     </label>
+
                     <div className="flex gap-2">
                         <input
                             type="text"
                             value={embedWidth}
                             onChange={(e) => setEmbedWidth(e.target.value)}
                             placeholder="100%"
-                            className="flex-1 px-3 py-2 bg-background border rounded-lg text-sm focus:ring-2 focus:ring-accent-500 outline-none"
+                            className="flex-1 px-3 py-2 text-sm rounded-lg
+                                   bg-background text-foreground
+                                   border border-border
+                                   placeholder:text-muted-foreground
+                                   focus:ring-2 focus:ring-accent-500 focus:outline-none"
                         />
+
                         <button
                             onClick={() => setEmbedWidth('100%')}
-                            className="px-3 py-2 text-sm bg-background border rounded-lg hover:bg-accent/10"
+                            className="px-3 py-2 text-sm rounded-lg
+                                   bg-background text-foreground
+                                   border border-border
+                                   hover:bg-accent/10 transition-colors"
                         >
                             Full
                         </button>
+
                         <button
                             onClick={() => setEmbedWidth('600px')}
-                            className="px-3 py-2 text-sm bg-background border rounded-lg hover:bg-accent/10"
+                            className="px-3 py-2 text-sm rounded-lg
+                                   bg-background text-foreground
+                                   border border-border
+                                   hover:bg-accent/10 transition-colors"
                         >
                             600px
                         </button>
@@ -111,19 +123,28 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
                         id="auto-resize"
                         checked={useAutoResize}
                         onChange={(e) => setUseAutoResize(e.target.checked)}
-                        className="w-4 h-4 rounded border-gray-300 text-accent-500 focus:ring-accent-500"
+                        className="w-4 h-4 rounded
+                               border-border
+                               bg-background
+                               text-accent-500
+                               focus:ring-accent-500"
                     />
-                    <label htmlFor="auto-resize" className="text-sm cursor-pointer flex-1">
+
+                    <label
+                        htmlFor="auto-resize"
+                        className="text-sm cursor-pointer flex-1 text-foreground"
+                    >
                         Auto-resize height (recommended)
                     </label>
                 </div>
 
-                {/* Height (only if not auto-resize) */}
+                {/* Height */}
                 {!useAutoResize && (
                     <div>
-                        <label className="block text-sm font-medium mb-1">
+                        <label className="block text-sm font-medium mb-1 text-foreground">
                             Height (pixels)
                         </label>
+
                         <input
                             type="number"
                             value={embedHeight}
@@ -131,7 +152,10 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
                             min="300"
                             max="2000"
                             step="50"
-                            className="w-full px-3 py-2 bg-background border rounded-lg text-sm focus:ring-2 focus:ring-accent-500 outline-none"
+                            className="w-full px-3 py-2 text-sm rounded-lg
+                                   bg-background text-foreground
+                                   border border-border
+                                   focus:ring-2 focus:ring-accent-500 focus:outline-none"
                         />
                     </div>
                 )}
@@ -140,22 +164,22 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
             {/* Preview */}
             <div>
                 <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-semibold">Preview</h4>
+                    <h4 className="text-sm font-semibold text-foreground">
+                        Preview
+                    </h4>
+
                     <span className="text-xs text-muted-foreground">
                         {useAutoResize ? 'Auto-height' : `${embedHeight}px tall`}
                     </span>
                 </div>
-                <div className="border rounded-lg p-4 bg-muted/30 overflow-hidden">
+
+                <div className="rounded-lg p-4 bg-muted/30 border border-border overflow-hidden">
                     <iframe
                         src={embedUrl}
                         width="100%"
                         height={useAutoResize ? "400" : embedHeight}
-                        style={{
-                            border: '1px solid #e5e7eb',
-                            borderRadius: '8px',
-                            minHeight: '300px'
-                        }}
-                        className="mx-auto"
+                        className="mx-auto rounded-lg border border-border bg-background"
+                        style={{ minHeight: '300px' }}
                     />
                 </div>
             </div>
@@ -163,26 +187,40 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
             {/* Embed Code */}
             <div>
                 <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-semibold">Embed Code</h4>
+                    <h4 className="text-sm font-semibold text-foreground">
+                        Embed Code
+                    </h4>
+
                     <button
                         onClick={handleCopy}
-                        className="text-xs px-3 py-1.5 bg-accent-500 hover:bg-accent-600 text-black rounded transition-colors"
+                        className="text-xs px-3 py-1.5 rounded
+                               bg-accent-500 text-primary-foreground
+                               hover:bg-accent-600 transition-colors"
                     >
                         {copied ? '✓ Copied!' : 'Copy Code'}
                     </button>
                 </div>
-                <pre className="p-4 bg-muted rounded-lg text-xs overflow-x-auto border">
+
+                <pre className="p-4 rounded-lg text-xs overflow-x-auto
+                            bg-muted text-foreground
+                            border border-border">
                     <code>{embedCode}</code>
                 </pre>
             </div>
 
             {/* Instructions */}
-            <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg space-y-2">
-                <h4 className="text-sm font-semibold">How to Use:</h4>
+            <div className="p-4 rounded-lg space-y-2
+                        bg-accent/10
+                        border border-accent/20">
+                <h4 className="text-sm font-semibold text-foreground">
+                    How to Use:
+                </h4>
+
                 <ol className="text-sm space-y-1.5 ml-4 list-decimal text-muted-foreground">
                     <li>Copy the embed code above</li>
                     <li>Paste it into your website's HTML</li>
                     <li>The timeline will automatically load and display</li>
+
                     {useAutoResize && (
                         <li className="text-accent-600 dark:text-accent-400">
                             The height will auto-adjust based on content
@@ -193,7 +231,10 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
 
             {/* Compatibility Note */}
             <div className="text-xs text-muted-foreground space-y-1">
-                <p className="font-medium">Compatible with:</p>
+                <p className="font-medium text-foreground">
+                    Compatible with:
+                </p>
+
                 <ul className="ml-4 list-disc space-y-0.5">
                     <li>WordPress, Webflow, Wix, Squarespace</li>
                     <li>Static HTML sites</li>
@@ -206,11 +247,13 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
             <div className="flex gap-2 pt-2">
                 <button
                     onClick={onClose}
-                    className="flex-1 px-4 py-2 bg-muted hover:bg-muted/80 rounded-lg transition-colors"
+                    className="flex-1 px-4 py-2 rounded-lg
+                           bg-muted text-foreground
+                           hover:bg-muted/80 transition-colors"
                 >
                     Done
                 </button>
             </div>
         </div>
-    );
-}
+    )
+};
