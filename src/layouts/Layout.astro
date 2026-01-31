@@ -16,7 +16,7 @@ const SITE = {
     title: "TimeCapsule — Your life in yearly snapshots",
     description:
         "A privacy-first tool to create year-by-year life timelines with memories, milestones, and future aspirations. Your data never leaves your browser.",
-    website: "https://timecapsule.srirams.me/", // Update with your actual domain
+    website: "https://timecapsule.srirams.me", // Update with your actual domain
     author: "TimeCapsule",
     lang: "en",
 };
@@ -111,6 +111,12 @@ const structuredData = {
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={socialImageURL} />
+
+        <link
+            rel="alternate"
+            type="application/json+oembed"
+            href={`${SITE.website}/api/oembed?url=${canonicalURL}`}
+        />
 
         <!-- PWA Meta Tags -->
         <meta

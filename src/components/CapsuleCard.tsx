@@ -138,7 +138,7 @@ export default function CapsuleCard({ capsule, onEdit, position, layoutMode = 'm
                                     <svg className="w-16 h-16 text-white/60 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                     </svg>
-                                    <p className="text-white/80 text-sm text-center break-all px-4">
+                                    <p className="text-black text-sm text-center break-all px-4">
                                         {new URL(capsule.mediaUrl || '').hostname}
                                     </p>
                                 </div>

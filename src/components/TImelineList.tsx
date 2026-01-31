@@ -172,7 +172,7 @@ export default function TimelineList() {
                                 <div className="flex gap-2 pt-2">
                                     <button
                                         onClick={(e) => handleRename(timeline.id, timeline.name, e)}
-                                        className="flex-1 px-3 py-2 text-sm bg-muted hover:bg-accent-500 hover:text-white rounded-lg transition-colors"
+                                        className="flex-1 px-3 py-2 text-sm bg-muted hover:bg-accent-500 hover:text-black rounded-lg transition-colors"
                                         title="Rename timeline"
                                     >
                                         Rename
@@ -180,7 +180,7 @@ export default function TimelineList() {
                                     <button
                                         onClick={(e) => handleDelete(timeline.id, timeline.name, e)}
                                         disabled={deleting === timeline.id}
-                                        className="px-3 py-2 text-sm border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="px-3 py-2 text-sm border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-black rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                         title="Delete timeline"
                                     >
                                         {deleting === timeline.id ? (

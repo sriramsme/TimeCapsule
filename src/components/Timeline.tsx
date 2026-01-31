@@ -15,13 +15,15 @@ interface TimelineProps {
     // For shared timelines (read-only, no storage)
     readOnly?: boolean;
     sharedCapsules?: Capsule[];
+    defaultLayoutMode?: LayoutMode;
 }
 
 export default function Timeline({
     timelineId,
     timelineName = 'My Timeline',
     readOnly = false,
-    sharedCapsules = []
+    sharedCapsules = [],
+    defaultLayoutMode = 'masonry',
 }: TimelineProps) {
     // Only use storage hook if we have a timelineId (not a shared view)
     const storageEnabled = !readOnly && timelineId !== undefined;
@@ -47,6 +49,9 @@ export default function Timeline({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCapsule, setEditingCapsule] = useState<Capsule | undefined>(undefined);
     const [layoutMode, setLayoutMode] = useState<LayoutMode>(() => {
+        if (defaultLayoutMode) {
+            return defaultLayoutMode;
+        }
         // Default to vertical on mobile, masonry on desktop
         if (typeof window !== 'undefined') {
             return window.innerWidth < 768 ? 'vertical' : 'masonry';
@@ -317,7 +322,7 @@ function EmptyState({ readOnly, onAddClick }: { readOnly: boolean; onAddClick: (
             {!readOnly && (
                 <button
                     onClick={onAddClick}
-                    className="px-6 py-3 bg-accent-500 text-white rounded-full hover:bg-accent-600 transition-colors"
+                    className="px-6 py-3 bg-accent-500 text-black rounded-full hover:bg-accent-600 transition-colors"
                 >
                     Add Your First Capsule
                 </button>
@@ -469,7 +474,7 @@ function ListView({
     onEdit: (capsule: Capsule) => void;
 }) {
     return (
-        <div className="max-w-4xl mx-auto space-y-3 px-4">
+        <div className="max-w-4xl mx-auto space-y-3 px-4 gap-2">
             {capsules.map((capsule) => (
                 <div
                     key={capsule.id}

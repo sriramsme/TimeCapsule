@@ -166,7 +166,7 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
                     <h4 className="text-sm font-semibold">Embed Code</h4>
                     <button
                         onClick={handleCopy}
-                        className="text-xs px-3 py-1.5 bg-accent-500 hover:bg-accent-600 text-white rounded transition-colors"
+                        className="text-xs px-3 py-1.5 bg-accent-500 hover:bg-accent-600 text-black rounded transition-colors"
                     >
                         {copied ? '✓ Copied!' : 'Copy Code'}
                     </button>

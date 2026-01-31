@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
-import type { Capsule, ShareMetadata } from "@/types";
+import type { Capsule, LayoutMode, ShareMetadata } from "@/types";
 import { importFromURLParameter } from "@/utils/export";
+import Timeline from "./Timeline";
 
+interface EmbedViewerProps {
+    layoutMode?: LayoutMode;
+    showMetadata?: boolean;
+}
 /**
  * Dedicated embed viewer for iframe embeds
  * Stripped down version with no navigation, optimized for embedding
  */
-export default function EmbedViewer() {
+export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerProps) {
     const [capsules, setCapsules] = useState<Capsule[]>([]);
     const [metadata, setMetadata] = useState<ShareMetadata | null>(null);
     const [loading, setLoading] = useState(true);
@@ -92,16 +97,16 @@ export default function EmbedViewer() {
 
     return (
         <div className="min-h-screen bg-background">
-            {/* Compact header with metadata */}
-            {metadata && (metadata.name || metadata.profilePic) && (
-                <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-                    <div className="container mx-auto px-4 py-3 max-w-4xl">
-                        <div className="flex items-center gap-3">
+            {/* Header with metadata if available */}
+            {metadata && showMetadata && (
+                <div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                    <div className="container mx-auto px-4 max-w-4xl py-4">
+                        <div className="flex items-center gap-4">
                             {metadata.profilePic && (
                                 <img
                                     src={metadata.profilePic}
                                     alt={metadata.name || 'Profile'}
-                                    className="w-8 h-8 rounded-full object-cover border border-accent-500/20"
+                                    className="w-12 h-12 rounded-full object-cover border-2 border-accent-500"
                                     onError={(e) => {
                                         e.currentTarget.style.display = 'none';
                                     }}
@@ -109,120 +114,73 @@ export default function EmbedViewer() {
                             )}
                             <div className="flex-1 min-w-0">
                                 {metadata.name && (
-                                    <h2 className="font-semibold text-sm truncate">
+                                    <h2 className="font-display font-bold text-lg truncate">
                                         {metadata.name}'s Timeline
                                     </h2>
                                 )}
                                 {metadata.bio && (
-                                    <p className="text-xs text-muted-foreground line-clamp-1">
+                                    <p className="text-sm text-muted-foreground line-clamp-2">
                                         {metadata.bio}
                                     </p>
                                 )}
+                                {metadata.sharedAt && (
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Shared {new Date(metadata.sharedAt).toLocaleDateString()}
+                                    </p>
+                                )}
                             </div>
-                            <a
-                                href={window.location.href.replace('/embed/', '/share/')}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-xs px-3 py-1.5 bg-accent-500 hover:bg-accent-600 text-white rounded transition-colors whitespace-nowrap"
+                            <button
+                                onClick={() => window.location.href = '/'}
+                                className="px-4 py-2 text-sm bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors whitespace-nowrap"
                             >
-                                View Full
-                            </a>
+                                Create Your Own
+                            </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Timeline content */}
-            <div className="container mx-auto px-4 py-6 max-w-4xl">
-                <div className="space-y-6">
-                    {capsules.map((capsule, index) => (
-                        <div
-                            key={capsule.id}
-                            className="bg-card border rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow"
-                        >
-                            {/* Year */}
-                            <div className="flex items-center gap-2 mb-3">
-                                <div className="w-1 h-8 bg-accent-500 rounded-full" />
+            {/* Simple header if no metadata */}
+            {!metadata && showMetadata && (
+                <div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                    <div className="container mx-auto px-4 max-w-4xl">
+                        <div className="flex h-16 items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 bg-gradient-to-br from-accent-500 to-accent-600 rounded-lg flex items-center justify-center">
+                                    <span className="text-black text-sm font-bold">TC</span>
+                                </div>
                                 <div>
-                                    <div className="font-display font-bold text-2xl">
-                                        {capsule.year}
-                                    </div>
-                                    {/* {capsule.age !== undefined && (
-                                        <div className="text-xs text-muted-foreground">
-                                            Age {capsule.age}
-                                        </div>
-                                    )} */}
+                                    <h1 className="font-display font-bold text-lg">Shared Timeline</h1>
+                                    <p className="text-xs text-muted-foreground">View only</p>
                                 </div>
                             </div>
-
-                            {/* Title */}
-                            {capsule.title && (
-                                <h3 className="font-semibold text-lg mb-2">
-                                    {capsule.title}
-                                </h3>
-                            )}
-
-                            {/* Description */}
-                            {capsule.description && (
-                                <p className="text-muted-foreground mb-3 whitespace-pre-wrap">
-                                    {capsule.description}
-                                </p>
-                            )}
-
-                            {/* Media */}
-                            {capsule.mediaUrl && capsule.mediaType === 'image' && (
-                                <img
-                                    src={capsule.mediaUrl}
-                                    alt={capsule.title || `Year ${capsule.year}`}
-                                    className="w-full rounded-lg mt-3 object-cover max-h-64"
-                                    loading="lazy"
-                                />
-                            )}
-
-                            {capsule.mediaUrl && capsule.mediaType === 'video' && (
-                                <video
-                                    src={capsule.mediaUrl}
-                                    controls
-                                    className="w-full rounded-lg mt-3 max-h-64"
-                                    preload="metadata"
-                                />
-                            )}
-
-                            {/* Tags */}
-                            {/* {capsule.tags && capsule.tags.length > 0 && (
-                                <div className="flex flex-wrap gap-1.5 mt-3">
-                                    {capsule.tags.map((tag, i) => (
-                                        <span
-                                            key={i}
-                                            className="text-xs px-2 py-1 bg-accent/10 text-accent-600 dark:text-accent-400 rounded"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            )} */}
+                            <button
+                                onClick={() => window.location.href = '/'}
+                                className="px-4 py-2 text-sm bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors"
+                            >
+                                Create Your Own
+                            </button>
                         </div>
-                    ))}
+                    </div>
                 </div>
+            )}
 
-                {/* Footer */}
-                <div className="text-center py-6 space-y-2">
-                    <p className="text-xs text-muted-foreground">
-                        {capsules.length} capsule{capsules.length !== 1 ? 's' : ''}
-                    </p>
-                    <a
-                        href="https://timecapsule.srirams.me"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-accent-600 hover:text-accent-700 dark:text-accent-400"
-                    >
-                        <span>Powered by TimeCapsule</span>
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    </a>
-                </div>
+            {/* Timeline */}
+            <main className="container mx-auto px-4 py-12 max-w-4xl">
+
+                <Timeline
+                    sharedCapsules={capsules}
+                    readOnly
+                    defaultLayoutMode={layoutMode}
+                />
+
+            </main>
+
+            {/* Footer with capsule count */}
+            <div className="py-8 text-center text-sm text-muted-foreground">
+                {capsules.length} capsule{capsules.length !== 1 ? 's' : ''} in this timeline
             </div>
         </div>
-    );
+
+    )
 }

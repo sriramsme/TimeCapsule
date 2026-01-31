@@ -109,7 +109,7 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                 : undefined;
 
         try {
-            const url = generateShareableURLWithExternal(externalUrl, metadata);
+            const url = generateShareableURLWithExternal(externalUrl, metadata, capsules.length);
             setShareUrl(url);
             setShareModalStep('success');
         } catch (error) {
@@ -237,7 +237,7 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                             </button>
                             <button
                                 onClick={handleGenerateExternalLink}
-                                className="flex-1 px-4 py-3 bg-accent-500 hover:bg-accent-600 text-white rounded-lg transition-colors font-medium"
+                                className="flex-1 px-4 py-3 bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors font-medium"
                                 disabled={!externalUrl.trim()}
                             >
                                 Generate Link
@@ -299,7 +299,7 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                             className="fixed inset-0 z-40"
                             onClick={() => setShowMenu(false)}
                         />
-                        <div className="absolute right-0 mt-2 w-64 bg-card border rounded-xl shadow-xl z-50 py-1 overflow-hidden">
+                        <div className="absolute right-0 mt-2 w-64 bg-white border rounded-xl shadow-xl z-50 py-1 overflow-hidden">
                             {/* Export Section */}
                             <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase">
                                 Export
@@ -527,7 +527,7 @@ function SuccessStep({
                 />
                 <button
                     onClick={onCopyLink}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-accent-500 hover:bg-accent-600 text-white rounded-lg transition-colors text-sm font-medium"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors text-sm font-medium"
                 >
                     {copied ? '✓ Copied!' : 'Copy'}
                 </button>

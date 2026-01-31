@@ -3,46 +3,28 @@
 import Layout from "@/layouts/Layout.astro";
 import ShareViewer from "@/components/ShareViewer";
 import Footer from "@/components/Footer.astro";
+import type { LayoutMode } from "@/types";
 
 // Extract URL parameters server-side or client-side
 const url = Astro.url.href;
 const searchParams = Astro.url.searchParams;
 
-// You can try to extract metadata if it's in the URL
-// Or set defaults and let the client update them
-const title = "Shared TimeCapsule Timeline";
-const description = "View this timeline";
-const ogImage = "https://timecapsule.srirams.me/og-image.png";
+const layoutMode = (searchParams.get("layout") as LayoutMode) || "masonry";
+const showMetadata = searchParams.get("showMetadata") === "true";
+
+const name = searchParams.get("name") || "Someone";
+const pic = searchParams.get("pic") || "/og-image.png";
+
+const title = `${name}'s TimeCapsule Timeline`;
+const description = `${name} shared their TimeCapsule Timeline`;
+const ogImage = pic;
 ---
 
-<Layout title={title}>
-    <!-- Add meta tags directly in Astro -->
-    <Fragment slot="head">
-        <meta name="description" content={description} />
-
-        <!-- Open Graph -->
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={url} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={ogImage} />
-
-        <!-- Twitter -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={url} />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={ogImage} />
-
-        <!-- oEmbed Discovery (optional - for future) -->
-        <link
-            rel="alternate"
-            type="application/json+oembed"
-            href={`https://timecapsule.srirams.me/api/oembed?url=${encodeURIComponent(url)}&format=json`}
-        />
-    </Fragment>
-
-    <ShareViewer client:load />
-
+<Layout title={title} description={description} ogImage={ogImage}>
+    <ShareViewer
+        client:load
+        layoutMode={layoutMode}
+        showMetadata={showMetadata}
+    />
     <Footer />
 </Layout>

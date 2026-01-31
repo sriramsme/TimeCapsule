@@ -210,7 +210,7 @@ export default function CapsuleModal({
         <div className="flex items-center gap-3">
             <button
                 onClick={handleSave}
-                className="flex-1 bg-accent-500 hover:bg-accent-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                className="flex-1 bg-accent-500 hover:bg-accent-600 text-black px-6 py-3 rounded-lg font-medium transition-colors"
             >
                 {isEditing ? 'Save Changes' : 'Add Capsule'}
             </button>
@@ -303,7 +303,7 @@ export default function CapsuleModal({
                             type="url"
                             value={formData.mediaUrl}
                             onChange={(e) => handleUrlChange(e.target.value)}
-                            className="w-full px-4 py-3 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500"
+                            className="w-full px-4 py-3 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 whitespace-nowrap overflow-x-auto"
                             placeholder="Paste any URL (auto-detects images, videos, links)"
                         />
                         {mediaType && !isLoadingPreview && (
@@ -388,7 +388,7 @@ export default function CapsuleModal({
                                     <img src={mediaPreview} alt="Video preview" className="w-full" />
                                     <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                                         <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center">
-                                            <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg className="w-8 h-8 text-black ml-1" fill="currentColor" viewBox="0 0 20 20">
                                                 <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                             </svg>
                                         </div>

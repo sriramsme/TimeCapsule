@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 import type { Capsule, ShareMetadata } from "@/types";
 import Timeline from "@/components/Timeline";
 import { importFromURLParameter } from "@/utils/export";
+import type { LayoutMode } from "@/types";
 
-export default function ShareViewer() {
+interface ShareViewerProps {
+    layoutMode?: LayoutMode;
+    showMetadata?: boolean;
+}
+
+export default function ShareViewer({ layoutMode, showMetadata = true }: ShareViewerProps) {
     const [capsules, setCapsules] = useState<Capsule[]>([]);
     const [metadata, setMetadata] = useState<ShareMetadata | null>(null);
     const [loading, setLoading] = useState(true);
@@ -29,21 +35,6 @@ export default function ShareViewer() {
         };
         load();
     }, []);
-
-    // Get current URL for oEmbed discovery
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
-    const oembedUrl = currentUrl ? `https://timecapsule.srirams.me/api/oembed?url=${encodeURIComponent(currentUrl)}` : '';
-
-    // Prepare meta information
-    const pageTitle = metadata?.name
-        ? `${metadata.name}'s TimeCapsule Timeline`
-        : 'Shared TimeCapsule Timeline';
-
-    const pageDescription = metadata?.bio
-        || `View this timeline with ${capsules.length} life moments`;
-
-    const ogImage = metadata?.profilePic
-        || 'https://timecapsule.srirams.me/og-image.png';
 
     if (loading) {
         return (
@@ -72,7 +63,7 @@ export default function ShareViewer() {
                         <p className="text-muted-foreground">{error}</p>
                         <button
                             onClick={() => window.location.href = '/'}
-                            className="px-6 py-2 bg-accent-500 hover:bg-accent-600 text-white rounded-lg transition-colors"
+                            className="px-6 py-2 bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors"
                         >
                             Go to TimeCapsule
                         </button>
@@ -96,7 +87,7 @@ export default function ShareViewer() {
                         <p className="text-muted-foreground">This shared timeline has no capsules yet.</p>
                         <button
                             onClick={() => window.location.href = '/'}
-                            className="px-6 py-2 bg-accent-500 hover:bg-accent-600 text-white rounded-lg transition-colors"
+                            className="px-6 py-2 bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors"
                         >
                             Create Your Own
                         </button>
@@ -108,46 +99,11 @@ export default function ShareViewer() {
 
     return (
         <>
-            {/* SEO and oEmbed Meta Tags */}
-            {/* Basic Meta */}
-            <title>{pageTitle}</title>
-            <meta name="description" content={pageDescription} />
-
-            {/* Open Graph / Facebook */}
-            <meta property="og:type" content="website" />
-            <meta property="og:url" content={currentUrl} />
-            <meta property="og:title" content={pageTitle} />
-            <meta property="og:description" content={pageDescription} />
-            <meta property="og:image" content={ogImage} />
-
-            {/* Twitter */}
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:url" content={currentUrl} />
-            <meta name="twitter:title" content={pageTitle} />
-            <meta name="twitter:description" content={pageDescription} />
-            <meta name="twitter:image" content={ogImage} />
-
-            {/* oEmbed Discovery Links */}
-            <link
-                rel="alternate"
-                type="application/json+oembed"
-                href={`${oembedUrl}&format=json`}
-                title={`${pageTitle} (JSON)`}
-            />
-            <link
-                rel="alternate"
-                type="text/xml+oembed"
-                href={`${oembedUrl}&format=xml`}
-                title={`${pageTitle} (XML)`}
-            />
-
-            {/* Canonical URL */}
-            <link rel="canonical" href={currentUrl} />
 
 
             <div className="min-h-screen bg-background">
                 {/* Header with metadata if available */}
-                {metadata && (
+                {metadata && showMetadata && (
                     <div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                         <div className="container mx-auto px-4 max-w-4xl py-4">
                             <div className="flex items-center gap-4">
@@ -180,7 +136,7 @@ export default function ShareViewer() {
                                 </div>
                                 <button
                                     onClick={() => window.location.href = '/'}
-                                    className="px-4 py-2 text-sm bg-accent-500 hover:bg-accent-600 text-white rounded-lg transition-colors whitespace-nowrap"
+                                    className="px-4 py-2 text-sm bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors whitespace-nowrap"
                                 >
                                     Create Your Own
                                 </button>
@@ -190,13 +146,13 @@ export default function ShareViewer() {
                 )}
 
                 {/* Simple header if no metadata */}
-                {!metadata && (
+                {!metadata && showMetadata && (
                     <div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                         <div className="container mx-auto px-4 max-w-4xl">
                             <div className="flex h-16 items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className="w-8 h-8 bg-gradient-to-br from-accent-500 to-accent-600 rounded-lg flex items-center justify-center">
-                                        <span className="text-white text-sm font-bold">TC</span>
+                                        <span className="text-black text-sm font-bold">TC</span>
                                     </div>
                                     <div>
                                         <h1 className="font-display font-bold text-lg">Shared Timeline</h1>
@@ -220,6 +176,7 @@ export default function ShareViewer() {
                     <Timeline
                         sharedCapsules={capsules}
                         readOnly
+                        defaultLayoutMode={layoutMode}
                     />
 
                 </main>
@@ -232,18 +189,3 @@ export default function ShareViewer() {
         </>
     );
 }
-
-/**
- * Note: This component requires react-helmet-async
- * 
- * Install it:
- * npm install react-helmet-async
- * 
- * Then wrap your app with HelmetProvider:
- * 
- * import { HelmetProvider } from 'react-helmet-async';
- * 
- * <HelmetProvider>
- *   <App />
- * </HelmetProvider>
- */

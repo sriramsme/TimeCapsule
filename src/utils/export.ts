@@ -225,9 +225,20 @@ export function generateShareableURL(
         // Compress using LZ-String
         const compressed = LZString.compressToEncodedURIComponent(jsonString);
 
+        const params = new URLSearchParams();
+
+        params.set("data", compressed);
+        params.set("layoutMode", "masonry")
+        params.set("showMetadata", "true")
+
+        // OG-friendly metadata
+        if (metadata?.name) params.set("name", metadata.name);
+        if (metadata?.profilePic) params.set("pic", metadata.profilePic);
+        params.set("count", capsules.length.toString());
+
         // Build URL
         const baseUrl = getShareBaseUrl();
-        const shareUrl = `${baseUrl}?data=${compressed}`;
+        const shareUrl = `${baseUrl}?${params.toString()}`;
 
         // Check URL length (browsers have ~2000 char limit, we use 1900 to be safe)
         const estimatedSize = new Blob([jsonString]).size;
@@ -256,15 +267,20 @@ export function generateShareableURL(
  */
 export function generateShareableURLWithExternal(
     externalUrl: string,
-    metadata?: ShareMetadata
+    metadata?: ShareMetadata,
+    capsulesCount?: number
 ): string {
     const baseUrl = getShareBaseUrl();
     const params = new URLSearchParams();
     params.set('url', externalUrl);
 
-    if (metadata) {
-        params.set('meta', LZString.compressToEncodedURIComponent(JSON.stringify(metadata)));
-    }
+    // OG-friendly metadata
+    if (metadata?.name) params.set("name", metadata.name);
+    if (metadata?.profilePic) params.set("pic", metadata.profilePic);
+    params.set("count", capsulesCount?.toString() || '0');
+
+    params.set("layoutMode", "masonry")
+    params.set("showMetadata", "true")
 
     return `${baseUrl}?${params.toString()}`;
 }

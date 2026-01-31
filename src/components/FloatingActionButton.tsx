@@ -78,7 +78,7 @@ export default function FloatingActionButton({
                 {/* Main FAB */}
                 <button
                     onClick={handleToggle}
-                    className={`w-14 h-14 rounded-full bg-accent-500 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center ${isOpen ? 'rotate-45' : ''
+                    className={`w-14 h-14 rounded-full bg-accent-500 text-black shadow-lg hover:shadow-xl transition-all flex items-center justify-center ${isOpen ? 'rotate-45' : ''
                         }`}
                     aria-label={isOpen ? 'Close menu' : 'Open menu'}
                 >
