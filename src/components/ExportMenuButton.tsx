@@ -212,13 +212,17 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                     <div className="flex gap-3">
                         <button
                             onClick={resetShareModal}
-                            className="flex-1 px-4 py-3 bg-muted hover:bg-muted/80 rounded-lg transition-colors font-medium text-red-500 outline"
+                            className="flex-1 px-4 py-3 rounded-lg font-medium transition-colors
+                                   bg-muted hover:bg-muted/80
+                                   text-destructive"
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleGenerateShareLink}
-                            className="flex-1 px-4 py-3 bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors font-medium outline"
+                            className="flex-1 px-4 py-3 rounded-lg font-medium transition-colors
+                                   bg-accent-500 hover:bg-accent-600
+                                   text-primary-foreground"
                         >
                             Generate Link
                         </button>
@@ -231,13 +235,16 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                         <div className="flex gap-3">
                             <button
                                 onClick={handleExportForHosting}
-                                className="flex-1 px-4 py-3 bg-muted hover:bg-muted/80 rounded-lg transition-colors font-medium text-sm"
+                                className="flex-1 px-4 py-3 rounded-lg font-medium text-sm transition-colors
+                                       bg-muted hover:bg-muted/80"
                             >
                                 Export JSON First
                             </button>
                             <button
                                 onClick={handleGenerateExternalLink}
-                                className="flex-1 px-4 py-3 bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors font-medium"
+                                className="flex-1 px-4 py-3 rounded-lg font-medium transition-colors
+                                       bg-accent-500 hover:bg-accent-600
+                                       text-primary-foreground disabled:opacity-50"
                                 disabled={!externalUrl.trim()}
                             >
                                 Generate Link
@@ -245,7 +252,8 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                         </div>
                         <button
                             onClick={resetShareModal}
-                            className="w-full px-4 py-2 text-sm text-muted-foreground hover:text-foreground"
+                            className="w-full px-4 py-2 text-sm transition-colors
+                                   text-muted-foreground hover:text-foreground"
                         >
                             Cancel
                         </button>
@@ -257,13 +265,17 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                     <div className="flex gap-3">
                         <button
                             onClick={handleShowEmbedCode}
-                            className="flex-1 px-4 py-3 border-2 border-accent-500 text-accent-600 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-950 rounded-lg transition-colors font-medium"
+                            className="flex-1 px-4 py-3 rounded-lg font-medium transition-colors
+                                   border border-accent-500
+                                   text-accent-600 dark:text-accent-400
+                                   hover:bg-accent/10"
                         >
                             Get Embed Code
                         </button>
                         <button
                             onClick={resetShareModal}
-                            className="flex-1 px-4 py-3 bg-muted hover:bg-muted/80 rounded-lg transition-colors font-medium"
+                            className="flex-1 px-4 py-3 rounded-lg font-medium transition-colors
+                                   bg-muted hover:bg-muted/80"
                         >
                             Done
                         </button>
@@ -271,7 +283,7 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                 );
 
             case 'embed':
-                return null; // EmbedCodeGenerator has its own close button
+                return null;
         }
     };
 
@@ -280,10 +292,16 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
             <div className="relative">
                 <button
                     onClick={() => setShowMenu(!showMenu)}
-                    className="p-4 rounded-2xl hover:bg-accent-50 dark:hover:bg-accent-950 transition-colors flex items-center gap-2 border-2 border-dashed border-accent-300 dark:border-accent-700"
+                    className="p-4 rounded-2xl transition-colors flex items-center gap-2
+                           border-2 border-dashed hover:border-accent hover:bg-accent-50"
                     title="Export Menu"
                 >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                        className="w-6 h-6 text-foreground"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -299,7 +317,8 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                             className="fixed inset-0 z-40"
                             onClick={() => setShowMenu(false)}
                         />
-                        <div className="absolute right-0 mt-2 w-64 bg-white border rounded-xl shadow-xl z-50 py-1 overflow-hidden">
+                        <div className="absolute right-0 mt-2 w-64 z-50 py-1 overflow-hidden
+                                    bg-background border border-border rounded-xl shadow-xl">
                             {/* Export Section */}
                             <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase">
                                 Export
@@ -307,12 +326,20 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
 
                             <button
                                 onClick={handleExportImage}
-                                className="w-full px-4 py-3 text-left hover:bg-muted transition-colors flex items-center gap-3"
+                                className="w-full px-4 py-3 text-left transition-colors
+                                       hover:bg-muted flex items-center gap-3"
                                 disabled={capsules.length === 0}
                             >
-                                <div className="w-10 h-10 rounded-lg bg-accent-100 dark:bg-accent-900 flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0
+                                            bg-accent/15">
+                                    <svg
+                                        className="w-5 h-5 text-accent-600 dark:text-accent-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                                 <div className="flex-1">
@@ -323,12 +350,20 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
 
                             <button
                                 onClick={handleExportJSON}
-                                className="w-full px-4 py-3 text-left hover:bg-muted transition-colors flex items-center gap-3"
+                                className="w-full px-4 py-3 text-left transition-colors
+                                       hover:bg-muted flex items-center gap-3"
                                 disabled={capsules.length === 0}
                             >
-                                <div className="w-10 h-10 rounded-lg bg-accent-100 dark:bg-accent-900 flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0
+                                            bg-accent/15">
+                                    <svg
+                                        className="w-5 h-5 text-accent-600 dark:text-accent-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                 </div>
                                 <div className="flex-1">
@@ -340,24 +375,34 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                             </button>
 
                             {/* Share Section */}
-                            <div className="border-t my-1"></div>
+                            <div className="border-t border-border my-1" />
                             <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase">
                                 Share
                             </div>
 
                             <button
                                 onClick={handleStartShare}
-                                className="w-full px-4 py-3 text-left hover:bg-muted transition-colors flex items-center gap-3"
+                                className="w-full px-4 py-3 text-left transition-colors
+                                       hover:bg-muted flex items-center gap-3"
                                 disabled={capsules.length === 0}
                             >
-                                <div className="w-10 h-10 rounded-lg bg-accent-100 dark:bg-accent-900 flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0
+                                            bg-accent/15">
+                                    <svg
+                                        className="w-5 h-5 text-accent-600 dark:text-accent-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                                     </svg>
                                 </div>
                                 <div className="flex-1">
                                     <div className="font-medium">Share Timeline</div>
-                                    <div className="text-xs text-muted-foreground">Generate link & embed</div>
+                                    <div className="text-xs text-muted-foreground">
+                                        Generate link & embed
+                                    </div>
                                 </div>
                             </button>
                         </div>
@@ -376,8 +421,9 @@ export default function ExportMenuButton({ capsules }: ExportMenuButtonProps) {
                 {renderModalContent()}
             </Modal>
         </>
-    );
-}
+    )
+};
+
 
 // Sub-components for each modal step
 function MetadataStep({
@@ -404,7 +450,7 @@ function MetadataStep({
             </p>
 
             <div>
-                <label className="block text-sm font-medium mb-2">
+                <label className="block text-sm font-medium mb-2 text-foreground">
                     Your Name (optional)
                 </label>
                 <input
@@ -412,12 +458,15 @@ function MetadataStep({
                     value={shareName}
                     onChange={(e) => onNameChange(e.target.value)}
                     placeholder="e.g., John Doe"
-                    className="w-full px-4 py-3 bg-background border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-lg
+                           bg-background border border-border
+                           text-foreground placeholder:text-muted-foreground
+                           focus:ring-2 focus:ring-accent-500 focus:outline-none"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-2">
+                <label className="block text-sm font-medium mb-2 text-foreground">
                     Profile Picture URL (optional)
                 </label>
                 <input
@@ -425,12 +474,15 @@ function MetadataStep({
                     value={shareProfilePic}
                     onChange={(e) => onProfilePicChange(e.target.value)}
                     placeholder="https://example.com/photo.jpg"
-                    className="w-full px-4 py-3 bg-background border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-lg
+                           bg-background border border-border
+                           text-foreground placeholder:text-muted-foreground
+                           focus:ring-2 focus:ring-accent-500 focus:outline-none"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-2">
+                <label className="block text-sm font-medium mb-2 text-foreground">
                     Bio (optional)
                 </label>
                 <textarea
@@ -438,27 +490,44 @@ function MetadataStep({
                     onChange={(e) => onBioChange(e.target.value)}
                     placeholder="Tell others about yourself..."
                     rows={3}
-                    className="w-full px-4 py-3 bg-background border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none resize-none"
+                    className="w-full px-4 py-3 rounded-lg resize-none
+                           bg-background border border-border
+                           text-foreground placeholder:text-muted-foreground
+                           focus:ring-2 focus:ring-accent-500 focus:outline-none"
                 />
             </div>
 
             {sizeInfo && sizeInfo.dataUrlCount > 0 && (
-                <div className="p-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                    <p className="text-sm text-yellow-800 dark:text-yellow-200 flex items-start gap-2">
-                        <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                <div
+                    className="p-4 rounded-lg
+                           bg-accent/10 border border-accent/20"
+                >
+                    <p className="text-sm text-accent-700 dark:text-accent-300 flex items-start gap-2">
+                        <svg
+                            className="w-5 h-5 flex-shrink-0 mt-0.5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clipRule="evenodd"
+                            />
                         </svg>
                         <span>
-                            {sizeInfo.dataUrlCount} uploaded image(s) will not be included in the share. Only external URLs are shared.
+                            {sizeInfo.dataUrlCount} uploaded image(s) will not be included in the share.
+                            Only external URLs are shared.
                         </span>
                     </p>
                 </div>
             )}
         </div>
-    );
-}
+    )
+};
 
-function TooLargeStep({
+
+
+export function TooLargeStep({
     estimatedSize,
     externalUrl,
     onExternalUrlChange,
@@ -470,8 +539,8 @@ function TooLargeStep({
     return (
         <div className="space-y-4">
             <p className="text-sm text-muted-foreground">
-                Your timeline is too large ({(estimatedSize / 1024).toFixed(1)} KB) to share via URL.
-                Please host your JSON file publicly and provide the link.
+                Your timeline is too large ({(estimatedSize / 1024).toFixed(1)} KB)
+                to share via URL. Please host your JSON file publicly and provide the link.
             </p>
 
             <div className="p-4 bg-accent-50 dark:bg-accent-950 border border-accent-200 dark:border-accent-800 rounded-lg space-y-3">
@@ -500,7 +569,7 @@ function TooLargeStep({
     );
 }
 
-function SuccessStep({
+export function SuccessStep({
     shareUrl,
     copied,
     onCopyLink,
@@ -514,7 +583,9 @@ function SuccessStep({
             <p className="text-sm text-muted-foreground">
                 Share this link with others. They can view and import your timeline.
                 <br />
-                <span className="text-red-500">Never include sensitive information in your timeline.</span>
+                <span className="text-red-500">
+                    Never include sensitive information in your timeline.
+                </span>
             </p>
 
             <div className="relative">
@@ -522,23 +593,31 @@ function SuccessStep({
                     type="text"
                     value={shareUrl}
                     readOnly
-                    className="w-full px-4 py-3 bg-muted rounded-lg pr-24 font-mono text-sm select-all"
+                    className="w-full px-4 py-3 bg-muted rounded-lg pr-24 font-mono text-sm select-all text-foreground"
                     onClick={(e) => e.currentTarget.select()}
                 />
                 <button
                     onClick={onCopyLink}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-accent-500 hover:bg-accent-600 text-black rounded-lg transition-colors text-sm font-medium"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-accent-500 hover:bg-accent-600 text-foreground rounded-lg transition-colors text-sm font-medium"
                 >
-                    {copied ? '✓ Copied!' : 'Copy'}
+                    {copied ? "✓ Copied!" : "Copy"}
                 </button>
             </div>
 
             <div className="p-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
                 <p className="text-sm text-green-800 dark:text-green-200 flex items-center gap-2">
-                    <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    <svg
+                        className="w-5 h-5 flex-shrink-0"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clipRule="evenodd"
+                        />
                     </svg>
-                    <span>Your shareable link has been generated successfully!</span>
+                    <span className='text-foreground'>Your shareable link has been generated successfully!</span>
                 </p>
             </div>
         </div>

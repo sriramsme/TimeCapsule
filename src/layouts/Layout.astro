@@ -1,5 +1,6 @@
 ---
-import "../styles/global.css";
+import { ViewTransitions } from "astro:transitions";
+import "@/styles/global.css";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -119,16 +120,7 @@ const structuredData = {
         />
 
         <!-- PWA Meta Tags -->
-        <meta
-            name="theme-color"
-            content="#ef4444"
-            media="(prefers-color-scheme: light)"
-        />
-        <meta
-            name="theme-color"
-            content="#dc2626"
-            media="(prefers-color-scheme: dark)"
-        />
+        <meta name="theme-color" content="" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta
             name="apple-mobile-web-app-status-bar-style"
@@ -147,6 +139,8 @@ const structuredData = {
             set:html={JSON.stringify(structuredData)}
         />
 
+        <script is:inline src="/toggle-theme.js"></script>
+
         {
             // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,
             // include google-site-verification tag in the heading
@@ -158,42 +152,7 @@ const structuredData = {
                 />
             )
         }
-
-        <!-- Theme Toggle Script (loads before body to prevent flash) -->
-        <script is:inline>
-            // Initialize theme from localStorage or system preference
-            const getThemePreference = () => {
-                if (
-                    typeof localStorage !== "undefined" &&
-                    localStorage.getItem("theme")
-                ) {
-                    return localStorage.getItem("theme");
-                }
-                return window.matchMedia("(prefers-color-scheme: dark)").matches
-                    ? "dark"
-                    : "light";
-            };
-
-            const isDark = getThemePreference() === "dark";
-            document.documentElement.classList[isDark ? "add" : "remove"](
-                "dark",
-            );
-
-            if (typeof localStorage !== "undefined") {
-                const observer = new MutationObserver(() => {
-                    const isDark =
-                        document.documentElement.classList.contains("dark");
-                    localStorage.setItem("theme", isDark ? "dark" : "light");
-                });
-                observer.observe(document.documentElement, {
-                    attributes: true,
-                    attributeFilter: ["class"],
-                });
-            }
-        </script>
-
-        <!-- Allow pages to inject additional head content -->
-        <slot name="head" />
+        <ViewTransitions />
     </head>
 
     <body>
@@ -201,89 +160,11 @@ const structuredData = {
     </body>
 </html>
 
-<style is:global>
-    /* Base HTML/Body Styles */
-    html {
-        font-family:
-            "Inter",
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            Roboto,
-            "Helvetica Neue",
-            Arial,
-            sans-serif;
-        scroll-behavior: smooth;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
+<style>
+    html,
     body {
         margin: 0;
         width: 100%;
-        min-height: 100vh;
-        overflow-x: hidden;
-    }
-
-    /* Typography */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-family:
-            "Space Grotesk",
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            Roboto,
-            sans-serif;
-        font-weight: 700;
-        line-height: 1.2;
-    }
-
-    /* Smooth transitions for theme changes */
-    html {
-        transition:
-            background-color 0.3s ease,
-            color 0.3s ease;
-    }
-
-    /* Focus visible for accessibility */
-    *:focus-visible {
-        outline: 2px solid rgb(var(--accent-rgb));
-        outline-offset: 2px;
-    }
-
-    /* Prevent layout shift from scrollbar */
-    html {
-        overflow-y: scroll;
-    }
-
-    /* Selection colors */
-    ::selection {
-        background-color: rgb(var(--accent-rgb) / 0.3);
-        color: inherit;
-    }
-
-    /* Better font rendering */
-    body {
-        text-rendering: optimizeLegibility;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    /* Remove default button styles */
-    button {
-        font-family: inherit;
-    }
-
-    /* Prevent iOS zoom on input focus */
-    @supports (-webkit-touch-callout: none) {
-        input,
-        select,
-        textarea {
-            font-size: 16px;
-        }
+        height: 100%;
     }
 </style>

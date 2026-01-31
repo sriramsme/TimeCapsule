@@ -210,22 +210,22 @@ export default function CapsuleModal({
         <div className="flex items-center gap-3">
             <button
                 onClick={handleSave}
-                className="flex-1 bg-accent-500 hover:bg-accent-600 text-black px-6 py-3 rounded-lg font-medium transition-colors"
+                className="flex-1 bg-primary text-primary-foreground hover:opacity-90 px-6 py-3 rounded-lg font-medium transition-all active:scale-[0.98]"
             >
                 {isEditing ? 'Save Changes' : 'Add Capsule'}
             </button>
             <button
                 onClick={onClose}
-                className="px-6 py-3 bg-muted hover:bg-muted/80 rounded-lg font-medium transition-colors"
+                className="px-6 py-3 bg-muted hover:bg-muted/80 rounded-lg font-medium transition-colors text-primary"
             >
                 Cancel
             </button>
             {isEditing && onDelete && (
                 <button
                     onClick={handleDelete}
-                    className="ml-auto text-red-600 hover:bg-red-50 dark:hover:bg-red-950 px-4 py-3 rounded-lg transition-colors"
+                    className="ml-auto text-red-500 hover:bg-red-500/10 px-4 py-3 rounded-lg transition-colors font-medium"
                 >
-                    Delete
+                    Delete Year
                 </button>
             )}
         </div>
@@ -242,20 +242,32 @@ export default function CapsuleModal({
             <div className="space-y-6">
                 {/* Year Input */}
                 <div>
-                    <label className="block text-sm font-medium mb-2">Year *</label>
+                    <label className="block text-sm text-foreground font-medium mb-2">
+                        Year *
+                    </label>
                     <input
                         type="number"
                         value={formData.year}
-                        onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) || 0 })}
-                        className="w-full px-4 py-3 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500"
+                        onChange={(e) =>
+                            setFormData({ ...formData, year: parseInt(e.target.value) || 0 })
+                        }
+                        className="w-full px-4 py-3 bg-background text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                         min="1900"
                         max="2200"
                         disabled={isEditing}
                     />
                     {formData.year && formData.year > currentYear && (
-                        <p className="text-xs text-accent-600 mt-2 flex items-center gap-1">
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                        <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1.5 px-2 py-1 bg-muted/50 rounded-md w-fit">
+                            <svg
+                                className="w-4 h-4 text-primary"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                    clipRule="evenodd"
+                                />
                             </svg>
                             This will be marked as a future aspiration
                         </p>
@@ -264,12 +276,16 @@ export default function CapsuleModal({
 
                 {/* Title Input */}
                 <div>
-                    <label className="block text-sm font-medium mb-2">Title *</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                        Title *
+                    </label>
                     <input
                         type="text"
                         value={formData.title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        className="w-full px-4 py-3 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500"
+                        onChange={(e) =>
+                            setFormData({ ...formData, title: e.target.value })
+                        }
+                        className="w-full px-4 py-3 bg-background text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                         placeholder="A meaningful title for this year..."
                         maxLength={100}
                     />
@@ -280,11 +296,15 @@ export default function CapsuleModal({
 
                 {/* Description Input */}
                 <div>
-                    <label className="block text-sm font-medium mb-2">Description</label>
+                    <label className="block text-sm text-foreground font-medium mb-2">
+                        Description
+                    </label>
                     <textarea
                         value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className="w-full px-4 py-3 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 min-h-[120px] resize-none"
+                        onChange={(e) =>
+                            setFormData({ ...formData, description: e.target.value })
+                        }
+                        className="w-full px-4 py-3 bg-background text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[120px] resize-none transition-all"
                         placeholder="Share your story, memories, or aspirations..."
                         maxLength={1000}
                     />
@@ -293,21 +313,22 @@ export default function CapsuleModal({
                     </p>
                 </div>
 
-                {/* Media Upload/URL */}
+                {/* Media */}
                 <div>
-                    <label className="block text-sm font-medium mb-2">Media (optional)</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                        Media (optional)
+                    </label>
 
-                    {/* URL Input */}
                     <div className="relative mb-3">
                         <input
                             type="url"
                             value={formData.mediaUrl}
                             onChange={(e) => handleUrlChange(e.target.value)}
-                            className="w-full px-4 py-3 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 whitespace-nowrap overflow-x-auto"
+                            className="w-full px-4 py-3 bg-background text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 whitespace-nowrap overflow-x-auto transition-all"
                             placeholder="Paste any URL (auto-detects images, videos, links)"
                         />
                         {mediaType && !isLoadingPreview && (
-                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs px-2 py-1 bg-accent-100 dark:bg-accent-900 text-accent-600 dark:text-accent-400 rounded-full capitalize">
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold tracking-wider px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded-full uppercase">
                                 {mediaType}
                             </span>
                         )}
@@ -315,14 +336,25 @@ export default function CapsuleModal({
 
                     <div className="text-sm text-muted-foreground mb-2">or</div>
 
-                    {/* Upload Button */}
                     <label className="block cursor-pointer">
-                        <div className="px-4 py-3 bg-muted hover:bg-muted/80 border-2 border-dashed rounded-lg text-center transition-colors">
+                        <div className="px-4 py-3 bg-muted/30 hover:bg-muted/50 border-2 border-dashed border-border hover:border-primary/50 rounded-lg text-center transition-all group/upload">
                             <div className="flex items-center justify-center gap-2">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                <svg
+                                    className="w-5 h-5 text-muted-foreground group-hover/upload:text-primary transition-colors"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                                    />
                                 </svg>
-                                <span className="font-medium">Upload File</span>
+                                <span className="font-medium text-foreground">
+                                    Upload File
+                                </span>
                             </div>
                             <span className="text-xs text-muted-foreground block mt-1">
                                 Max 5MB (not recommended for sharing)
@@ -336,35 +368,34 @@ export default function CapsuleModal({
                         />
                     </label>
 
-                    {/* Loading State */}
                     {isLoadingPreview && (
-                        <div className="mt-4 p-4 border rounded-lg flex items-center justify-center gap-2">
-                            <div className="w-4 h-4 border-2 border-accent-500 border-t-transparent rounded-full animate-spin" />
-                            <span className="text-sm text-muted-foreground">Fetching preview...</span>
+                        <div className="mt-4 p-4 border border-border bg-muted/30 rounded-lg flex items-center justify-center gap-3">
+                            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                            <span className="text-sm text-muted-foreground font-medium">
+                                Fetching preview...
+                            </span>
                         </div>
                     )}
 
-                    {/* Media Preview */}
                     {!isLoadingPreview && mediaPreview && (
-                        <div className="mt-4 rounded-lg overflow-hidden border">
-                            {/* Link Preview Card */}
+                        <div className="mt-4 rounded-xl overflow-hidden border border-border bg-card shadow-sm">
                             {linkPreview && (
-                                <div className="p-4 bg-muted/50">
-                                    <div className="flex gap-3">
+                                <div className="p-4">
+                                    <div className="flex gap-4">
                                         <img
                                             src={linkPreview.image}
                                             alt="Preview"
-                                            className="w-24 h-24 object-cover rounded flex-shrink-0"
+                                            className="w-24 h-24 object-cover rounded-lg flex-shrink-0 border border-border shadow-sm"
                                             onError={() => setPreviewError(true)}
                                         />
                                         <div className="flex-1 min-w-0">
-                                            <h4 className="font-medium text-sm line-clamp-2 mb-1">
+                                            <h4 className="font-semibold text-foreground text-sm line-clamp-2 mb-1">
                                                 {linkPreview.title || 'Untitled'}
                                             </h4>
-                                            <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+                                            <p className="text-xs text-muted-foreground line-clamp-2 mb-2 leading-relaxed">
                                                 {linkPreview.description || ''}
                                             </p>
-                                            <p className="text-xs text-accent-600 truncate">
+                                            <p className="text-[10px] font-bold text-primary uppercase tracking-wider">
                                                 {new URL(linkPreview.url).hostname}
                                             </p>
                                         </div>
@@ -372,7 +403,6 @@ export default function CapsuleModal({
                                 </div>
                             )}
 
-                            {/* Image Preview */}
                             {!linkPreview && mediaType === 'image' && (
                                 <img
                                     src={mediaPreview}
@@ -382,13 +412,20 @@ export default function CapsuleModal({
                                 />
                             )}
 
-                            {/* Video Preview */}
                             {!linkPreview && mediaType === 'video' && (
                                 <div className="relative">
-                                    <img src={mediaPreview} alt="Video preview" className="w-full" />
-                                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                                        <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center">
-                                            <svg className="w-8 h-8 text-black ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <img
+                                        src={mediaPreview}
+                                        alt="Video preview"
+                                        className="w-full"
+                                    />
+                                    <div className="absolute inset-0 flex items-center justify-center bg-foreground/30">
+                                        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                                            <svg
+                                                className="w-8 h-8 ml-1 text-primary-foreground"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
                                                 <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                             </svg>
                                         </div>
@@ -397,7 +434,7 @@ export default function CapsuleModal({
                             )}
 
                             {previewError && (
-                                <div className="p-4 text-center text-sm text-muted-foreground bg-muted">
+                                <div className="p-4 text-center text-sm text-muted-foreground bg-muted/50">
                                     Could not load preview. URL will be saved anyway.
                                 </div>
                             )}
@@ -405,29 +442,41 @@ export default function CapsuleModal({
                     )}
 
                     <p className="text-xs text-muted-foreground mt-2">
-                        Supports images, videos, YouTube, and link previews. Uploaded files won't be included in shared timelines.
+                        Supports images, videos, YouTube, and link previews. Uploaded
+                        files won't be included in shared timelines.
                     </p>
                 </div>
 
-                {/* Milestone Checkbox */}
+                {/* Milestone */}
                 <div>
-                    <label className="flex items-center gap-3 cursor-pointer group p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                    <label className="flex items-center gap-3 cursor-pointer group p-4 rounded-xl hover:bg-muted/30 border border-transparent hover:border-border transition-all">
                         <input
                             type="checkbox"
                             checked={formData.milestone || false}
-                            onChange={(e) => setFormData({ ...formData, milestone: e.target.checked })}
-                            className="w-5 h-5 rounded border-gray-300 text-accent-500 focus:ring-accent-500 cursor-pointer"
+                            onChange={(e) =>
+                                setFormData({ ...formData, milestone: e.target.checked })
+                            }
+                            className="peer w-5 h-5 rounded border-border bg-background text-primary focus:ring-primary focus:ring-offset-2 focus:ring-offset-background cursor-pointer transition-all"
                         />
                         <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium">Mark as milestone</span>
-                            <span className="text-lg">⭐</span>
+                            <span className="text-sm font-semibold text-foreground">
+                                Mark as milestone
+                            </span>
+                            <span
+                                className={`text-lg transition-transform duration-300 ${formData.milestone
+                                    ? 'scale-125 rotate-12'
+                                    : 'grayscale opacity-50'
+                                    }`}
+                            >
+                                ⭐
+                            </span>
                         </div>
                     </label>
-                    <p className="text-xs text-muted-foreground mt-1 ml-11">
+                    <p className="text-xs text-muted-foreground mt-1 ml-12">
                         Highlight this year as a major life event
                     </p>
                 </div>
             </div>
         </Modal>
-    );
-}
+    )
+};

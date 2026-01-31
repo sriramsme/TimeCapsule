@@ -13,10 +13,9 @@ import Footer from "@/components/Footer.astro";
 			<!-- Background Image with Overlay -->
 			<div class="absolute inset-0 z-0">
 				<div
-					class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-background z-10"
+					class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-[var(--background)] z-10"
 				>
 				</div>
-				<!-- Replace with your background image -->
 				<img
 					src="/bg.webp"
 					alt="Background"
@@ -33,19 +32,21 @@ import Footer from "@/components/Footer.astro";
 							class="block text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold tracking-tight"
 						>
 							<span
-								class="inline-block animate-float"
-								style="animation-delay: 0s;">Time</span
+								class="inline-block animate-float text-white"
+								style="animation-delay: 0s; font-weight: bold"
+								>Time</span
 							>
 							<span
-								class="inline-block animate-float text-accent-400"
-								style="animation-delay: 0.2s;">Capsule</span
+								class="inline-block animate-float text-white"
+								style="animation-delay: 0.2s; font-weight: bold"
+								>Capsule</span
 							>
 						</span>
 					</h1>
 
 					<!-- Subtitle -->
 					<p
-						class="text-xl sm:text-2xl md:text-3xl text-white/90 font-light tracking-wide animate-fade-in"
+						class="text-xl sm:text-2xl md:text-3xl text-[var(--foreground)]/90 font-light tracking-wide animate-fade-in"
 						style="animation-delay: 0.4s;"
 					>
 						Your life in yearly snapshots
@@ -56,7 +57,9 @@ import Footer from "@/components/Footer.astro";
 						class="flex flex-wrap gap-3 justify-center items-center pt-8 animate-fade-in"
 						style="animation-delay: 0.6s;"
 					>
-						<div class="feature-pill">
+						<div
+							class="feature-pill bg-[var(--accent)]/10 border-[var(--border)] text-[var(--accent-foreground)]"
+						>
 							<svg
 								class="w-5 h-5"
 								fill="none"
@@ -71,7 +74,9 @@ import Footer from "@/components/Footer.astro";
 							</svg>
 							<span>Create</span>
 						</div>
-						<div class="feature-pill">
+						<div
+							class="feature-pill bg-[var(--accent)]/10 border-[var(--border)] text-[var(--accent-foreground)]"
+						>
 							<svg
 								class="w-5 h-5"
 								fill="none"
@@ -88,7 +93,9 @@ import Footer from "@/components/Footer.astro";
 							<span>Share</span>
 							<span class="feature-badge">✨</span>
 						</div>
-						<div class="feature-pill">
+						<div
+							class="feature-pill bg-[var(--accent)]/10 border-[var(--border)] text-[var(--accent-foreground)]"
+						>
 							<svg
 								class="w-5 h-5"
 								fill="none"
@@ -113,7 +120,7 @@ import Footer from "@/components/Footer.astro";
 					class="absolute mt-16 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer"
 				>
 					<svg
-						class="w-6 h-6 text-white/70 animate-fade-in-up"
+						class="w-6 h-6 text-[var(--foreground)]/70 animate-fade-in-up"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -129,10 +136,13 @@ import Footer from "@/components/Footer.astro";
 		</section>
 
 		<!-- Timelines Section -->
-		<section id="timelines" class="py-16 sm:py-20 bg-background relative">
+		<section
+			id="timelines"
+			class="py-16 sm:py-20 bg-[var(--background)] relative"
+		>
 			<!-- Decorative gradient -->
 			<div
-				class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-500/50 to-transparent"
+				class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-500)]/50 to-transparent"
 			>
 			</div>
 
@@ -140,11 +150,13 @@ import Footer from "@/components/Footer.astro";
 				<div class="max-w-6xl mx-auto">
 					<!-- Section Header -->
 					<div class="text-center mb-12 space-y-4">
-						<h2 class="text-4xl sm:text-5xl font-display font-bold">
+						<h2
+							class="text-4xl sm:text-5xl font-display font-bold text-[var(--foreground)]"
+						>
 							Your Timelines
 						</h2>
 						<p
-							class="text-lg text-muted-foreground max-w-2xl mx-auto"
+							class="text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto"
 						>
 							Capture, preserve, and share the moments that define
 							your journey
@@ -211,6 +223,7 @@ import Footer from "@/components/Footer.astro";
 		text-shadow:
 			0 4px 20px rgba(0, 0, 0, 0.5),
 			0 0 40px rgba(var(--accent-rgb), 0.3);
+		color: white;
 	}
 
 	/* Feature Pills */

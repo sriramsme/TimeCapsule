@@ -92,7 +92,7 @@ export default function TimelineList() {
             {/* Create New Timeline Card */}
             <button
                 onClick={createNewTimeline}
-                className="w-full group relative overflow-hidden rounded-2xl border-2 border-dashed border-accent-300 dark:border-accent-700 hover:border-accent-500 transition-all p-8 sm:p-12 bg-gradient-to-br from-accent-50/50 to-transparent dark:from-accent-950/50 hover:shadow-lg hover:shadow-accent-500/10"
+                className="w-full group relative overflow-hidden rounded-2xl border-1 hover:border-accent-500 transition-all p-8 sm:p-12 bg-glass-morphism dark:from-accent-950/50 hover:shadow-lg hover:shadow-accent-500/10"
             >
                 <div className="relative z-10 flex flex-col items-center gap-4">
                     <div className="w-16 h-16 rounded-full bg-accent-500 flex items-center justify-center group-hover:scale-110 transition-transform">

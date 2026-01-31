@@ -58,7 +58,7 @@ export default function Timeline({
         }
         return 'masonry';
     });
-    const [zoomLevel, setZoomLevel] = useState(100);
+    const [zoomLevel, setZoomLevel] = useState(50);
     const [isMobile, setIsMobile] = useState(false);
 
     // Detect mobile on mount and resize
@@ -194,7 +194,6 @@ export default function Timeline({
 }
 
 // Extracted sub-components for better organization
-
 function TimelineHeader({
     readOnly,
     layoutMode,
@@ -221,7 +220,7 @@ function TimelineHeader({
         return (
             <div className="space-y-3 mb-6">
                 <div className="px-4">
-                    <div className="bg-background/95 backdrop-blur-sm border rounded-2xl p-3">
+                    <div className="bg-card/95 backdrop-blur-sm border border-border rounded-2xl p-3">
                         <TimelineControls
                             layoutMode={layoutMode}
                             onLayoutChange={onLayoutChange}
@@ -248,18 +247,23 @@ function TimelineHeader({
             {!readOnly && (
                 <button
                     onClick={onAddClick}
-                    className="border-2 border-dashed rounded-2xl p-4 hover:border-accent-500 hover:bg-accent-50 dark:hover:bg-accent-950 transition-all group flex-shrink-0"
+                    className="border-2 border-dashed rounded-2xl p-4 hover:border-accent hover:bg-accent-50 transition-all group flex-shrink-0"
                     title="Add a capsule to your timeline"
                     aria-label="Add new capsule"
                 >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                        className="w-6 h-6 text-card-foreground"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                     </svg>
                 </button>
             )}
 
             {/* Controls - Dynamic Island style */}
-            <div className="bg-background/95 backdrop-blur-sm border rounded-full py-3 px-6 shadow-sm">
+            <div className="bg-card/95 backdrop-blur-sm border border-border rounded-full py-3 px-6 shadow-sm">
                 <TimelineControls
                     layoutMode={layoutMode}
                     onLayoutChange={onLayoutChange}
@@ -282,7 +286,7 @@ function TimelineHeader({
 
 function StatsBanner({ stats }: { stats: any }) {
     return (
-        <div className="bg-muted/50 rounded-xl p-3 flex items-center justify-around text-sm">
+        <div className="bg-muted/50 dark:bg-muted/30 rounded-xl p-3 flex items-center justify-around text-sm">
             <div className="text-center">
                 <div className="font-bold text-lg text-foreground">{stats.total}</div>
                 <div className="text-xs text-muted-foreground">Capsules</div>
@@ -310,19 +314,18 @@ function StatsBanner({ stats }: { stats: any }) {
 
 function EmptyState({ readOnly, onAddClick }: { readOnly: boolean; onAddClick: () => void }) {
     return (
-        <div className="text-center py-16">
+        <div className="text-center py-16 bg-background text-card-foreground">
             <div className="text-6xl mb-4">📦</div>
             <h3 className="text-xl font-display font-bold mb-2">No capsules yet</h3>
             <p className="text-muted-foreground mb-6">
                 {readOnly
                     ? 'This timeline is empty'
-                    : 'Start building your timeline by adding your first capsule'
-                }
+                    : 'Start building your timeline by adding your first capsule'}
             </p>
             {!readOnly && (
                 <button
                     onClick={onAddClick}
-                    className="px-6 py-3 bg-accent-500 text-black rounded-full hover:bg-accent-600 transition-colors"
+                    className="px-6 py-3 bg-accent text-accent-foreground hover:bg-accent-600 hover:text-accent-foreground rounded-full transition-colors"
                 >
                     Add Your First Capsule
                 </button>
@@ -330,6 +333,7 @@ function EmptyState({ readOnly, onAddClick }: { readOnly: boolean; onAddClick: (
         </div>
     );
 }
+
 
 function TimelineContent({
     capsules,
@@ -353,7 +357,6 @@ function TimelineContent({
             return null;
     }
 }
-
 function MasonryLayout({
     capsules,
     readOnly,
@@ -363,7 +366,6 @@ function MasonryLayout({
     readOnly: boolean;
     onEdit: (capsule: Capsule) => void;
 }) {
-    // Sort capsules by year for chronological flow
     const sortedCapsules = [...capsules].sort((a, b) => a.year - b.year);
 
     return (
@@ -382,7 +384,7 @@ function MasonryLayout({
                         <polygon
                             points="0 0, 10 3, 0 6"
                             fill="currentColor"
-                            className="text-black"
+                            className="text-foreground"
                         />
                     </marker>
                 </defs>
@@ -415,11 +417,12 @@ function VerticalLayout({
 }) {
     return (
         <div className="relative max-w-4xl mx-auto px-4">
-            {/* Timeline spine - dashed for better visibility */}
+            {/* Timeline spine */}
             <div
                 className="absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2"
                 style={{
-                    background: 'repeating-linear-gradient(to bottom, rgb(var(--accent-rgb) / 0.4) 0px, rgb(var(--accent-rgb) / 0.4) 8px, transparent 8px, transparent 16px)'
+                    background:
+                        'repeating-linear-gradient(to bottom, rgb(var(--accent-rgb) / 0.4) 0px, rgb(var(--accent-rgb) / 0.4) 8px, transparent 8px, transparent 16px)',
                 }}
             />
 
@@ -430,13 +433,13 @@ function VerticalLayout({
                     return (
                         <div key={capsule.id} className="relative">
                             {/* Connector dot */}
-                            <div className="absolute left-1/2 top-12 w-3 h-3 bg-accent-500 rounded-full -translate-x-1/2 z-20 ring-4 ring-background shadow-lg" />
+                            {/* <div className="absolute left-1/2 top-12 w-3 h-3 bg-accent rounded-full -translate-x-1/2 z-20 ring-4 ring-background shadow-lg" /> */}
 
                             {/* Dashed line from spine to card */}
                             <svg
                                 className="absolute left-1/2 top-12 w-32 h-2 -translate-x-1/2 pointer-events-none"
                                 style={{
-                                    transform: position === 'left' ? 'translateX(-50%) scaleX(-1)' : 'translateX(-50%)'
+                                    transform: position === 'left' ? 'translateX(-50%) scaleX(-1)' : 'translateX(-50%)',
                                 }}
                             >
                                 <line
@@ -479,16 +482,20 @@ function ListView({
                 <div
                     key={capsule.id}
                     onClick={readOnly ? undefined : () => onEdit(capsule)}
-                    className={`bg-card border rounded-xl p-4 flex items-center gap-4 transition-all ${readOnly ? '' : 'cursor-pointer hover:shadow-lg hover:scale-[1.01]'
+                    className={`bg-card border border-border rounded-xl p-4 flex items-center gap-4 transition-all ${readOnly ? '' : 'cursor-pointer hover:shadow-lg hover:scale-[1.01]'
                         }`}
                     role={readOnly ? undefined : 'button'}
                     tabIndex={readOnly ? undefined : 0}
-                    onKeyDown={readOnly ? undefined : (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            onEdit(capsule);
-                        }
-                    }}
+                    onKeyDown={
+                        readOnly
+                            ? undefined
+                            : (e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    onEdit(capsule);
+                                }
+                            }
+                    }
                 >
                     {/* Thumbnail */}
                     {capsule.mediaUrl ? (
@@ -508,25 +515,21 @@ function ListView({
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="font-bold text-accent-600 dark:text-accent-400">
-                                {capsule.year}
-                            </span>
+                            <span className="font-bold text-accent dark:text-accent-foreground">{capsule.year}</span>
                             {capsule.milestone && (
-                                <span className="text-yellow-500" aria-label="Milestone">⭐</span>
+                                <span className="text-yellow-500" aria-label="Milestone">
+                                    ⭐
+                                </span>
                             )}
                             {capsule.type === 'future' && (
-                                <span className="text-xs px-2 py-0.5 bg-accent-500/10 text-accent-600 rounded-full">
+                                <span className="text-xs px-2 py-0.5 bg-accent/10 text-accent rounded-full">
                                     Future
                                 </span>
                             )}
                         </div>
-                        <h3 className="font-semibold mb-1 truncate">
-                            {capsule.title}
-                        </h3>
+                        <h3 className="font-semibold mb-1 truncate text-card-foreground">{capsule.title}</h3>
                         {capsule.description && (
-                            <p className="text-sm text-muted-foreground line-clamp-2">
-                                {capsule.description}
-                            </p>
+                            <p className="text-sm text-muted-foreground line-clamp-2">{capsule.description}</p>
                         )}
                     </div>
 
@@ -534,17 +537,12 @@ function ListView({
                     {capsule.tags && capsule.tags.length > 0 && (
                         <div className="hidden lg:flex gap-1 flex-wrap max-w-xs">
                             {capsule.tags.slice(0, 3).map((tag, i) => (
-                                <span
-                                    key={i}
-                                    className="text-xs px-2 py-1 bg-muted rounded"
-                                >
+                                <span key={i} className="text-xs px-2 py-1 bg-muted rounded text-card-foreground">
                                     {tag}
                                 </span>
                             ))}
                             {capsule.tags.length > 3 && (
-                                <span className="text-xs px-2 py-1 text-muted-foreground">
-                                    +{capsule.tags.length - 3}
-                                </span>
+                                <span className="text-xs px-2 py-1 text-muted-foreground">+{capsule.tags.length - 3}</span>
                             )}
                         </div>
                     )}
@@ -557,46 +555,42 @@ function ListView({
 function MasonryStyles() {
     return (
         <style>{`
-            .masonry-grid {
-                column-count: 1;
-                column-gap: 1.5rem;
-            }
+      .masonry-grid {
+        column-count: 1;
+        column-gap: 1.5rem;
+      }
 
-            @media (min-width: 640px) {
-                .masonry-grid {
-                    column-count: 2;
-                }
-            }
+      @media (min-width: 640px) {
+        .masonry-grid {
+          column-count: 2;
+        }
+      }
 
-            @media (min-width: 1024px) {
-                .masonry-grid {
-                    column-count: 3;
-                }
-            }
+      @media (min-width: 1024px) {
+        .masonry-grid {
+          column-count: 3;
+        }
+      }
 
-            @media (min-width: 1536px) {
-                .masonry-grid {
-                    column-count: 4;
-                }
-            }
+      @media (min-width: 1536px) {
+        .masonry-grid {
+          column-count: 4;
+        }
+      }
 
-            .masonry-item {
-                break-inside: avoid;
-                margin-bottom: 1.5rem;
-            }
+      .masonry-item {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+      }
 
-            @keyframes pulse-subtle {
-                0%, 100% {
-                    opacity: 1;
-                }
-                50% {
-                    opacity: 0.7;
-                }
-            }
+      @keyframes pulse-subtle {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
 
-            .animate-pulse-subtle {
-                animation: pulse-subtle 3s ease-in-out infinite;
-            }
-        `}</style>
+      .animate-pulse-subtle {
+        animation: pulse-subtle 3s ease-in-out infinite;
+      }
+    `}</style>
     );
 }
