@@ -1,6 +1,7 @@
 ---
 import { ViewTransitions } from "astro:transitions";
 import "@/styles/global.css";
+import { SITE } from "@/config";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -13,21 +14,12 @@ interface Props {
     noIndex?: boolean;
 }
 
-const SITE = {
-    title: "TimeCapsule — Your life in yearly snapshots",
-    description:
-        "A privacy-first tool to create year-by-year life timelines with memories, milestones, and future aspirations. Your data never leaves your browser.",
-    website: "https://timecapsule.srirams.me", // Update with your actual domain
-    author: "TimeCapsule",
-    lang: "en",
-};
-
 const {
     title = SITE.title,
-    description = SITE.description,
+    description = SITE.desc,
     ogImage = "/og-image.png",
     canonicalURL = new URL(Astro.url.pathname, Astro.url),
-    author = SITE.author,
+    author = `@${SITE.authorUsername}`,
     noIndex = false,
 } = Astro.props;
 
@@ -38,7 +30,7 @@ const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "TimeCapsule",
-    description: SITE.description,
+    description: SITE.desc,
     url: SITE.website,
     applicationCategory: "LifestyleApplication",
     offers: {
@@ -52,6 +44,7 @@ const structuredData = {
         "Milestone tracking",
         "Future aspirations planning",
         "Export and share capabilities",
+        "Shareable embeds",
     ],
 };
 ---

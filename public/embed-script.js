@@ -1,22 +1,16 @@
 /**
- * TimeCapsule Embed Script - PRODUCTION
  * Handles auto-resize and theme syncing for iframes.
  *
- * Usage:
- * <script src="https://timecapsule.srirams.me/embed-script.js"></script>
- * <iframe 
- *   src="https://timecapsule.srirams.me/embed/?data=..." 
- *   id="timecapsule-embed"
- *   width="100%"
- *   frameborder="0"
- * ></iframe>
  */
 (function () {
     'use strict';
 
+    const url = import.meta.env.PUBLIC_VITE_BASE_URL;
+    const domain = import.meta.env.PUBLIC_VITE_DOMAIN;
+
     // PRODUCTION ONLY - No localhost for security
     const ALLOWED_ORIGINS = [
-        'https://timecapsule.srirams.me'
+        url
     ];
 
     const MIN_HEIGHT = 200;
@@ -28,7 +22,7 @@
 
     function initTimeCapsuleEmbeds() {
         const iframes = document.querySelectorAll(
-            'iframe[src*="timecapsule.srirams.me/embed"]'
+            'iframe[src*="' + domain + '/embed"]'
         );
 
         if (!iframes.length) {
@@ -113,7 +107,7 @@
 
     function sendThemeToEmbeds() {
         const iframes = document.querySelectorAll(
-            'iframe[src*="timecapsule.srirams.me/embed"]'
+            'iframe[src*="' + domain + '/embed"]'
         );
 
         iframes.forEach(iframe => {

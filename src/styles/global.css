@@ -213,3 +213,37 @@
     scrollbar-width: none;
     /* Firefox */
 }
+
+/* Particle animation for star burst effect */
+@keyframes particle {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(-20px) scale(0.5);
+    }
+}
+
+.animate-particle {
+    animation: particle 0.6s ease-out forwards;
+}
+
+/* Optional: Pulse animation for loading state */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

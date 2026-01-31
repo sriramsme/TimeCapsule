@@ -2,6 +2,8 @@
 import Layout from "@/layouts/Layout.astro";
 import TimelineList from "@/components/TImelineList";
 import Footer from "@/components/Footer.astro";
+import { SITE } from "@/config";
+import GitHubStarsButton from "@/components/GithubStarsButton";
 ---
 
 <Layout title="TimeCapsule - Your Life in Yearly Snapshots">
@@ -20,6 +22,13 @@ import Footer from "@/components/Footer.astro";
 					src="/bg.webp"
 					alt="Background"
 					class="w-full h-full object-cover"
+				/>
+			</div>
+			<div class="absolute top-4 right-4">
+				<GitHubStarsButton
+					variant="default"
+					size="default"
+					client:load
 				/>
 			</div>
 
@@ -54,7 +63,7 @@ import Footer from "@/components/Footer.astro";
 
 					<!-- Feature Pills -->
 					<div
-						class="flex flex-wrap gap-3 justify-center items-center pt-8 animate-fade-in"
+						class="flex flex-wrap gap-3 justify-center items-center pt-4 animate-fade-in"
 						style="animation-delay: 0.6s;"
 					>
 						<div
@@ -110,6 +119,24 @@ import Footer from "@/components/Footer.astro";
 								></path>
 							</svg>
 							<span>Export</span>
+						</div>
+						<div
+							class="feature-pill bg-[var(--accent)]/10 border-[var(--border)] text-[var(--accent-foreground)]"
+						>
+							<svg
+								class="w-5 h-5"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+								></path>
+							</svg>
+							<span>Embed</span>
 						</div>
 					</div>
 				</div>

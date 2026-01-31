@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
+import { SITE } from './src/config';
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,6 +20,6 @@ export default defineConfig({
             exclude: ["@resvg/resvg-js"],
         },
     },
-    site: "https://timecapsule.srirams.me",
+    site: SITE.website,
     trailingSlash: "never",
 });

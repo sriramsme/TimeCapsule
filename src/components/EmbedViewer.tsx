@@ -41,16 +41,27 @@ export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerPro
     // Handle height changes and send to parent
     useEffect(() => {
         let resizeObserver: ResizeObserver | null = null;
+        let mutationObserver: MutationObserver | null = null;
         let lastSentHeight = 0;
         let timeoutId: any = null;
 
         const sendHeight = () => {
-            // Use scrollHeight for actual content height
-            const height = document.documentElement.scrollHeight;
+            const mainContent = document.querySelector('main');
+            if (!mainContent) return;
 
-            // Only send if height changed significantly (prevents feedback loop)
+            // Get the actual rendered height of main + any offset from top
+            const rect = mainContent.getBoundingClientRect();
+            const height = Math.ceil(rect.bottom + window.scrollY);
+
+            console.log('[EmbedViewer] sendHeight check:', {
+                currentHeight: height,
+                lastSentHeight,
+                diff: Math.abs(height - lastSentHeight)
+            });
+
             if (Math.abs(height - lastSentHeight) > 5) {
                 lastSentHeight = height;
+                console.log('[EmbedViewer] Sending height to parent:', height);
                 window.parent.postMessage(
                     { type: "timecapsule-resize", height },
                     "*"
@@ -73,17 +84,35 @@ export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerPro
 
         // Use ResizeObserver to detect content changes
         resizeObserver = new ResizeObserver(() => {
+            console.log('[EmbedViewer] ResizeObserver fired');
             debouncedSend();
         });
 
         // Only observe the main content container, not the whole body
         const mainContent = document.querySelector('main');
         if (mainContent) {
+            console.log('[EmbedViewer] Setting up observers on <main>');
             resizeObserver.observe(mainContent);
+
+            // MutationObserver catches layout switches (masonry/vertical/list)
+            // which restructure the DOM but may not reliably trigger ResizeObserver.
+            // Safe from infinite loops: parent resizing the iframe doesn't add/remove
+            // nodes inside <main>, so this won't re-fire after a height update.
+            mutationObserver = new MutationObserver((mutations) => {
+                console.log('[EmbedViewer] MutationObserver fired, mutations:', mutations.length);
+                debouncedSend();
+            });
+            mutationObserver.observe(mainContent, {
+                childList: true,
+                subtree: true,
+            });
+        } else {
+            console.warn('[EmbedViewer] <main> element not found!');
         }
 
         // Send on image loads
         const handleImageLoad = () => {
+            console.log('[EmbedViewer] Image loaded');
             setTimeout(sendHeight, 100);
         };
 
@@ -98,6 +127,9 @@ export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerPro
             clearTimeout(initialSend);
             if (resizeObserver) {
                 resizeObserver.disconnect();
+            }
+            if (mutationObserver) {
+                mutationObserver.disconnect();
             }
             if (timeoutId) {
                 clearTimeout(timeoutId);

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SITE } from '@/config';
 
 interface EmbedCodeGeneratorProps {
     shareUrl: string;
@@ -23,7 +24,7 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
         if (useAutoResize) {
             // Auto-resize version with script
             return `
-<script src="https://timecapsule.srirams.me/embed-script.js"></script>
+<script src="${SITE.website}/embed-script.js"></script>
 <iframe 
   src="${embedUrl}"
   width="${embedWidth}"

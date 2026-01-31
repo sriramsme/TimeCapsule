@@ -1,3 +1,7 @@
+---
+import { SITE } from "@/config";
+---
+
 <footer
     class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
 >
@@ -33,7 +37,7 @@
         <!-- Privacy text (responsive) -->
         <span class="hidden sm:inline">
             Create your own <a
-                href="https://srirams.me"
+                href={SITE.website}
                 target="_blank"
                 class="underline hover:text-foreground transition-colors cursor-pointer"
                 >TimeCapsule</a
@@ -42,19 +46,16 @@
 
         <span class="sm:hidden"> Private & local. </span>
 
-        <!-- Divider -->
-        <span class="opacity-40">•</span>
-
         <!-- Always visible credit -->
         <span class="whitespace-nowrap">
             Made with <span class="text-primary">❤️</span>
             by
             <a
-                href="https://srirams.me"
+                href={SITE.authorUrl}
                 target="_blank"
                 class="underline hover:text-foreground transition-colors cursor-pointer"
             >
-                @sriramsme
+                @{SITE.authorUsername}
             </a>
         </span>
     </div>
