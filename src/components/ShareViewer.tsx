@@ -119,82 +119,14 @@ export default function ShareViewer({ layoutMode, showMetadata = true }: ShareVi
 
     return (
         <div className="min-h-screen bg-background text-foreground">
-            {/* Header with metadata */}
-            {metadata && showMetadata && (
-                <div className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                    <div className="container mx-auto px-4 max-w-4xl py-4">
-                        <div className="flex items-center gap-4">
-                            {metadata.profilePic && (
-                                <img
-                                    src={metadata.profilePic}
-                                    alt={metadata.name || 'Profile'}
-                                    className="w-12 h-12 rounded-full object-cover border-2 border-accent-500"
-                                    onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
-                                    }}
-                                />
-                            )}
-                            <div className="flex-1 min-w-0">
-                                {metadata.name && (
-                                    <h2 className="font-display font-bold text-lg truncate text-card-foreground">
-                                        {metadata.name}'s Timeline
-                                    </h2>
-                                )}
-                                {metadata.bio && (
-                                    <p className="text-sm text-muted-foreground line-clamp-2">
-                                        {metadata.bio}
-                                    </p>
-                                )}
-                                {metadata.sharedAt && (
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                        Shared {new Date(metadata.sharedAt).toLocaleDateString()}
-                                    </p>
-                                )}
-                            </div>
-                            <button
-                                onClick={() => (window.location.href = '/')}
-                                className="px-4 py-2 text-sm bg-accent text-accent-foreground hover:bg-accent-600 hover:text-accent-foreground rounded-lg transition-colors whitespace-nowrap"
-                            >
-                                Create Your Own
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Simple header if no metadata */}
-            {!metadata && showMetadata && (
-                <div className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                    <div className="container mx-auto px-4 max-w-4xl">
-                        <div className="flex h-16 items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 bg-gradient-to-br from-accent to-accent-600 rounded-lg flex items-center justify-center">
-                                    <span className="text-accent-foreground text-sm font-bold">TC</span>
-                                </div>
-                                <div>
-                                    <h1 className="font-display font-bold text-lg text-card-foreground">
-                                        Shared Timeline
-                                    </h1>
-                                    <p className="text-xs text-muted-foreground">View only</p>
-                                </div>
-                            </div>
-                            <button
-                                onClick={() => (window.location.href = '/')}
-                                className="px-4 py-2 text-sm bg-accent text-accent-foreground hover:bg-accent-600 hover:text-accent-foreground rounded-lg transition-colors"
-                            >
-                                Create Your Own
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
             {/* Timeline */}
             <main className="container mx-auto px-4 py-12 max-w-4xl">
                 <Timeline
                     sharedCapsules={capsules}
                     readOnly
                     defaultLayoutMode={layoutMode}
+                    showMetadata={showMetadata}
+                    metadata={metadata}
                 />
             </main>
 

@@ -1,22 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
 import type { Capsule, LayoutMode, ShareMetadata } from "@/types";
 import { importFromURLParameter } from "@/utils/export";
 import Timeline from "./Timeline";
-
-interface EmbedViewerProps {
-    layoutMode?: LayoutMode;
-    showMetadata?: boolean;
-}
 
 /**
  * Dedicated embed viewer for iframe embeds
  * Stripped down version with no navigation, optimized for embedding
  */
-export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerProps) {
+export default function EmbedViewer() {
     const [capsules, setCapsules] = useState<Capsule[]>([]);
     const [metadata, setMetadata] = useState<ShareMetadata | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [layoutMode, setLayoutMode] = useState<LayoutMode>('masonry');
+    const [showMetadata, setShowMetadata] = useState(false);
+
+    // Extract URL parameters on mount
+    useEffect(() => {
+        const url = window.location.href;
+        const searchParams = new URL(url).searchParams;
+
+        const layout = (searchParams.get("layout") as LayoutMode) || "masonry";
+        const showMeta = searchParams.get("showMetadata") === "true";
+
+        console.log('🔗 EmbedViewer params:', { layout, showMeta });
+
+        setLayoutMode(layout);
+        setShowMetadata(showMeta);
+    }, []);
 
     useEffect(() => {
         const load = async () => {
@@ -201,97 +212,14 @@ export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerPro
 
     return (
         <div className="bg-background text-foreground mt-4 scrollbar-hidden">
-            {/* Header with metadata */}
-            {metadata && showMetadata && (
-                <div className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                    <div className="container mx-auto px-4 max-w-4xl py-4">
-                        <div className="flex items-center gap-4">
-                            {metadata.profilePic && (
-                                <img
-                                    src={metadata.profilePic}
-                                    alt={metadata.name || 'Profile'}
-                                    className="w-12 h-12 rounded-full object-cover border-2 border-accent-500"
-                                    onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
-                                    }}
-                                />
-                            )}
-
-                            <div className="flex-1 min-w-0">
-                                {metadata.name && (
-                                    <h2 className="font-display font-bold text-lg truncate text-foreground">
-                                        {metadata.name}'s Timeline
-                                    </h2>
-                                )}
-
-                                {metadata.bio && (
-                                    <p className="text-sm text-muted-foreground line-clamp-2">
-                                        {metadata.bio}
-                                    </p>
-                                )}
-
-                                {metadata.sharedAt && (
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                        Shared {new Date(metadata.sharedAt).toLocaleDateString()}
-                                    </p>
-                                )}
-                            </div>
-
-                            <button
-                                onClick={() => window.location.href = '/'}
-                                className="px-4 py-2 text-sm rounded-lg whitespace-nowrap
-                                       bg-accent-500 text-primary-foreground
-                                       hover:bg-accent-600 transition-colors"
-                            >
-                                Create Your Own
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Simple header if no metadata */}
-            {!metadata && showMetadata && (
-                <div className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                    <div className="container mx-auto px-4 max-w-4xl">
-                        <div className="flex h-16 items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg flex items-center justify-center
-                                            bg-gradient-to-br from-accent-500 to-accent-600">
-                                    <span className="text-primary-foreground text-sm font-bold">
-                                        TC
-                                    </span>
-                                </div>
-
-                                <div>
-                                    <h1 className="font-display font-bold text-lg text-foreground">
-                                        Shared Timeline
-                                    </h1>
-                                    <p className="text-xs text-muted-foreground">
-                                        View only
-                                    </p>
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={() => window.location.href = '/'}
-                                className="px-4 py-2 text-sm rounded-lg
-                                       bg-accent-500 text-primary-foreground
-                                       hover:bg-accent-600 transition-colors"
-                            >
-                                Create Your Own
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
             {/* Timeline */}
             <main className="container mx-auto max-w-4xl pb-8">
                 <Timeline
                     sharedCapsules={capsules}
                     readOnly
                     defaultLayoutMode={layoutMode}
+                    showMetadata={showMetadata}
+                    metadata={metadata}
                 />
             </main>
         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { Capsule, LayoutMode } from '../types';
+import type { Capsule, LayoutMode, ShareMetadata } from '../types';
 import CapsuleCard from './CapsuleCard';
 import CapsuleModal from './CapsuleModal';
 import TimelineControls from './TImelineControls';
@@ -8,7 +8,6 @@ import FloatingActionButton from './FloatingActionButton';
 import { useTimeline } from '@/hooks/useTimeline';
 
 interface TimelineProps {
-    // For owned timelines (with storage)
     timelineId?: string;
     timelineName?: string;
 
@@ -16,17 +15,47 @@ interface TimelineProps {
     readOnly?: boolean;
     sharedCapsules?: Capsule[];
     defaultLayoutMode?: LayoutMode;
+
+    // Optional metadata header
+    showMetadata?: boolean;
+    metadata?: ShareMetadata | null;
 }
 
 export default function Timeline({
-    timelineId,
+    timelineId: propTimelineId,
     timelineName = 'My Timeline',
     readOnly = false,
     sharedCapsules = [],
     defaultLayoutMode = 'masonry',
+    showMetadata = false,
+    metadata,
 }: TimelineProps) {
+
+    const [timelineId, setTimelineId] = useState<string | undefined>(propTimelineId);
+    const [isClient, setIsClient] = useState(false);
+
+    // Get timeline ID from URL on client-side
+    useEffect(() => {
+        setIsClient(true);
+
+        // If no timelineId was passed as prop, get it from URL
+        if (!propTimelineId) {
+            const params = new URLSearchParams(window.location.search);
+            const urlId = params.get('id');
+
+            console.log('🔗 Getting timeline ID from URL:', urlId);
+
+            if (urlId) {
+                setTimelineId(urlId);
+            }
+        } else {
+            console.log('📦 Using timeline ID from props:', propTimelineId);
+            setTimelineId(propTimelineId);
+        }
+    }, [propTimelineId]);
+
     // Only use storage hook if we have a timelineId (not a shared view)
-    const storageEnabled = !readOnly && timelineId !== undefined;
+    const storageEnabled = !readOnly && timelineId !== undefined && timelineId !== '';
 
     const {
         capsules: storedCapsules,
@@ -133,6 +162,11 @@ export default function Timeline({
 
     return (
         <>
+            {/* Metadata Header - Optional */}
+            {showMetadata && metadata && (
+                <TimelineMetadataHeader metadata={metadata} isMobile={isMobile} />
+            )}
+
             {/* Header/Controls Bar */}
             <TimelineHeader
                 readOnly={readOnly}
@@ -193,7 +227,107 @@ export default function Timeline({
     );
 }
 
-// Extracted sub-components for better organization
+// Metadata Header Component
+function TimelineMetadataHeader({
+    metadata,
+    isMobile
+}: {
+    metadata: ShareMetadata;
+    isMobile: boolean;
+}) {
+    const formattedDate = metadata.sharedAt
+        ? new Date(metadata.sharedAt).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        })
+        : null;
+
+    if (isMobile) {
+        return (
+            <div className="px-4 mb-6">
+                <div className="p-4 shadow-sm">
+                    <div className="flex items-start gap-3">
+                        {metadata.profilePic && (
+                            <img
+                                src={metadata.profilePic}
+                                alt={metadata.name || 'Profile'}
+                                className="w-14 h-14 rounded-full object-cover border-2 border-accent/30 shadow-sm flex-shrink-0"
+                                onError={(e) => {
+                                    e.currentTarget.style.display = 'none';
+                                }}
+                            />
+                        )}
+                        <div className="flex-1 min-w-0">
+                            {metadata.name && (
+                                <h2 className="font-display font-bold text-lg text-foreground truncate">
+                                    {metadata.name}'s TimeCapsule
+                                </h2>
+                            )}
+                            {metadata.bio && (
+                                <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                                    {metadata.bio}
+                                </p>
+                            )}
+                            {formattedDate && (
+                                <p className="text-xs text-muted-foreground/70 mt-2 flex items-center gap-1">
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    Shared {formattedDate}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Desktop layout - centered and elegant
+    return (
+        <div className="mb-8">
+            <div className="max-w-2xl mx-auto">
+                <div className=" rounded-3xl p-6 shadow-lg">
+                    <div className="flex items-center gap-5">
+                        {metadata.profilePic && (
+                            <img
+                                src={metadata.profilePic}
+                                alt={metadata.name || 'Profile'}
+                                className="w-20 h-20 rounded-full object-cover border-3 border-accent/20 shadow-md flex-shrink-0 ring-2 ring-background"
+                                onError={(e) => {
+                                    e.currentTarget.style.display = 'none';
+                                }}
+                            />
+                        )}
+                        <div className="flex-1 min-w-0">
+                            {metadata.name && (
+                                <h1 className="font-display font-bold text-2xl text-foreground mb-1">
+                                    {metadata.name}'s TimeCapsule
+                                </h1>
+                            )}
+                            {metadata.bio && (
+                                <p className="text-base text-muted-foreground line-clamp-2 leading-relaxed">
+                                    {metadata.bio}
+                                </p>
+                            )}
+                            {formattedDate && (
+                                <p className="text-sm text-muted-foreground/70 mt-2 flex items-center gap-1.5">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    Shared on {formattedDate}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Timeline Header Component
 function TimelineHeader({
     readOnly,
     layoutMode,
@@ -283,7 +417,6 @@ function TimelineHeader({
         </div>
     );
 }
-
 function StatsBanner({ stats }: { stats: any }) {
     return (
         <div className="bg-muted/50 dark:bg-muted/30 rounded-xl p-3 flex items-center justify-around text-sm">
