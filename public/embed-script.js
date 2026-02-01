@@ -5,8 +5,8 @@
 (function () {
     'use strict';
 
-    const url = import.meta.env.PUBLIC_VITE_BASE_URL;
-    const domain = import.meta.env.PUBLIC_VITE_DOMAIN;
+    const url = "https://timecapsule.srirams.me";
+    const domain = "https://timecapsule.srirams.me";
 
     // PRODUCTION ONLY - No localhost for security
     const ALLOWED_ORIGINS = [

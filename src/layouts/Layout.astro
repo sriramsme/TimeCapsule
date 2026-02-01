@@ -106,11 +106,15 @@ const structuredData = {
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={socialImageURL} />
 
-        <link
-            rel="alternate"
-            type="application/json+oembed"
-            href={`${SITE.website}/api/oembed?url=${canonicalURL}`}
-        />
+        {
+            Astro.url.pathname === "/share" && (
+                <link
+                    rel="alternate"
+                    type="application/json+oembed"
+                    href={`${SITE.website}/api/oembed?url=${encodeURIComponent(canonicalURL.toString())}`}
+                />
+            )
+        }
 
         <!-- PWA Meta Tags -->
         <meta name="theme-color" content="" />

@@ -10,7 +10,7 @@ export async function GET({ url }: { url: string }) {
     }
 
     // Convert share → embed
-    const embedUrl = targetUrl.replace("/share/", "/embed/");
+    const embedUrl = targetUrl.replace("/share", "/embed");
 
     const response = {
         type: "rich",
