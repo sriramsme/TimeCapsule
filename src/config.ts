@@ -26,9 +26,8 @@ export const SITE: Site = {
     authorUrl: "https://srirams.me",
     githubUrl: "https://github.com/sriramsme/TimeCapsule",
 
-    title: "TimeCapsule — Your life in yearly snapshots",
-    desc:
-        "A tool to create year-by-year life timelines with memories, milestones, and future aspirations. Share. Embed.",
+    title: "TimeCapsule — Chronicle anything, beautifully",
+    desc: "Your life in yearly snapshots. Create and share visual timelines for life events, projects, relationships, or anything that unfolds year by year. Privacy-first, browser-based, no account needed.",
     lightAndDarkMode: true,
     lang: "en"
 };

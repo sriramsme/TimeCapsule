@@ -1,7 +1,7 @@
 {
-  "name": "TimeCapsule — Your Life Timeline",
+  "name": "TimeCapsule — Chronicle anything, beautifully",
   "short_name": "TimeCapsule",
-  "description": "Create year-by-year life timelines with memories, milestones, and future aspirations. Privacy-first, data never leaves your browser.",
+  "desc": "Your life in yearly snapshots. Create and share visual timelines for life events, projects, relationships, or anything that unfolds year by year. Privacy-first, browser-based, no account needed.",
   "start_url": "/",
   "orientation": "portrait-primary",
   "categories": [

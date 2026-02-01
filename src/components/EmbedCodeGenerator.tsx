@@ -17,7 +17,7 @@ export default function EmbedCodeGenerator({ shareUrl, onClose }: EmbedCodeGener
     const [copied, setCopied] = useState(false);
 
     // Convert share URL to embed URL
-    const embedUrl = shareUrl.replace('/share/', '/embed/');
+    const embedUrl = shareUrl.replace('/share', '/embed');
 
     // Generate embed code based on settings
     const generateEmbedCode = () => {
