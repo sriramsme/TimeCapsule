@@ -3,32 +3,17 @@
 // This is a dedicated embed page for iframe embeds
 // It's separate from share.astro to provide a minimal, optimized embedding experience
 import Layout from "@/layouts/Layout.astro";
-import type { LayoutMode } from "@/types";
-
-// Import the EmbedViewer React component
 import EmbedViewer from "@/components/EmbedViewer";
 import EmbedFooter from "@/components/EmbedFooter.astro";
-
-const url = Astro.url.href;
-const searchParams = Astro.url.searchParams;
-const layoutMode = (searchParams.get("layout") as LayoutMode) || "masonry";
-const showMetadata = searchParams.get("showMetadata") === "true";
-
-const title = "TimeCapsule Embed";
-const description = "Embedded timeline view";
 ---
 
-<Layout title={title}>
+<Layout>
   <!-- 
     Use client:only="react" because EmbedViewer relies on browser APIs:
     - window.location for URL parameters
     - postMessage for auto-resize
     - ResizeObserver for height detection
   -->
-  <EmbedViewer
-    client:only="react"
-    layoutMode={layoutMode}
-    showMetadata={showMetadata}
-  />
+  <EmbedViewer client:only="react" />
   <EmbedFooter />
 </Layout>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { storage, type TimelineMetadata } from '@/utils/storage';
+import ImportMenuButton from './ImportMenuButton';
 
 export default function TimelineList() {
     const [timelines, setTimelines] = useState<TimelineMetadata[]>([]);
@@ -23,7 +24,6 @@ export default function TimelineList() {
 
     async function createNewTimeline() {
         const name = prompt('Enter a name for your timeline:', 'My Timeline');
-
         if (name && name.trim()) {
             try {
                 const id = crypto.randomUUID().slice(0, 8);
@@ -61,7 +61,6 @@ export default function TimelineList() {
         event.stopPropagation();
 
         const newName = prompt('Enter new timeline name:', currentName);
-
         if (newName && newName.trim() && newName !== currentName) {
             try {
                 await storage.renameTimeline(timelineId, newName.trim());
@@ -72,6 +71,7 @@ export default function TimelineList() {
             }
         }
     }
+
 
     if (loading) {
         return (
@@ -109,6 +109,8 @@ export default function TimelineList() {
                 {/* Animated background effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-accent-500/0 via-accent-500/5 to-accent-500/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </button>
+            {/* Import Timeline Button */}
+            <ImportMenuButton onImportSuccess={loadTimelines} />
 
             {/* Timeline Grid */}
             {timelines.length === 0 ? (

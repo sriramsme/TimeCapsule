@@ -318,12 +318,6 @@ export async function importFromURLParameter(): Promise<ShareData | null> {
 
             return shareData;
         }
-
-        // Legacy support for old 'import' parameter
-        if (params.has('import')) {
-            return importFromURLParameterLegacy(params.get('import')!);
-        }
-
         return null;
     } catch (error) {
         console.error('Failed to import from URL parameter:', error);
@@ -387,29 +381,6 @@ async function importFromURLParameterUrl(urlParam: string): Promise<ShareData> {
     } catch (error) {
         console.error('Failed to import from external URL:', error);
         throw new Error('Failed to load timeline from URL. Please check the link.');
-    }
-}
-
-// Legacy support for old compression method
-async function importFromURLParameterLegacy(importData: string): Promise<ShareData | null> {
-    try {
-        if (!importData) return null;
-
-        const decoded = decodeURIComponent(importData);
-        const jsonString = atob(decoded);
-        const parsed = JSON.parse(jsonString);
-
-        // Clear the URL parameter after import
-        const url = new URL(window.location.href);
-        url.searchParams.delete('import');
-        window.history.replaceState({}, '', url.toString());
-
-        return {
-            capsules: sortCapsules(Array.isArray(parsed) ? parsed : parsed.capsules)
-        };
-    } catch (error) {
-        console.error('Failed to import from legacy URL parameter:', error);
-        return null;
     }
 }
 

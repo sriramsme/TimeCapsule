@@ -3,11 +3,13 @@ import Layout from "@/layouts/Layout.astro";
 import TimelineComponent from "@/components/Timeline";
 import Footer from "@/components/Footer.astro";
 const id = Astro.url.searchParams.get("id") ?? "";
+
+console.log("timelineid", id);
 ---
 
 <Layout>
     <div class="p-4 mt-8">
-        <TimelineComponent timelineId={id} timelineName={id} client:load />
+        <TimelineComponent client:load />
     </div>
     <Footer />
 </Layout>
