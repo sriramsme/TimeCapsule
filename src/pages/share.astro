@@ -5,6 +5,7 @@ import ShareViewer from "@/components/ShareViewer";
 import Footer from "@/components/Footer.astro";
 import type { LayoutMode } from "@/types";
 
+export const prerender = false; // Force server-side rendering for this page
 // Extract URL parameters server-side or client-side
 const url = Astro.url.href;
 const searchParams = Astro.url.searchParams;

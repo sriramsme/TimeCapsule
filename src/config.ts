@@ -18,11 +18,9 @@ interface Site {
     lang: string;
 }
 
-const url = import.meta.env.PUBLIC_VITE_BASE_URL;
-
 // Site configuration
 export const SITE: Site = {
-    website: url,
+    website: "https://timecapsule.srirams.me",
     author: "Sriram Seelamneni",
     authorUsername: "sriramsme",
     authorUrl: "https://srirams.me",
