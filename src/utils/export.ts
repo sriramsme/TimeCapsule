@@ -51,7 +51,6 @@ export async function exportAsImage(
 
         // Fallback to JPEG if PNG fails
         try {
-            console.log('Trying JPEG fallback...');
             const dataUrl = await toJpeg(element, {
                 quality: 0.95,
                 pixelRatio: 2,

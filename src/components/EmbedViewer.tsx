@@ -53,15 +53,8 @@ export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerPro
             const rect = mainContent.getBoundingClientRect();
             const height = Math.ceil(rect.bottom + window.scrollY);
 
-            console.log('[EmbedViewer] sendHeight check:', {
-                currentHeight: height,
-                lastSentHeight,
-                diff: Math.abs(height - lastSentHeight)
-            });
-
             if (Math.abs(height - lastSentHeight) > 5) {
                 lastSentHeight = height;
-                console.log('[EmbedViewer] Sending height to parent:', height);
                 window.parent.postMessage(
                     { type: "timecapsule-resize", height },
                     "*"
@@ -83,15 +76,24 @@ export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerPro
         const initialSend = setTimeout(sendHeight, 300);
 
         // Use ResizeObserver to detect content changes
-        resizeObserver = new ResizeObserver(() => {
-            console.log('[EmbedViewer] ResizeObserver fired');
-            debouncedSend();
+        let lastObservedSize = { width: 0, height: 0 };
+
+        resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                const { width, height } = entry.contentRect;
+
+                // Only trigger if size actually changed
+                if (Math.abs(width - lastObservedSize.width) > 1 ||
+                    Math.abs(height - lastObservedSize.height) > 1) {
+                    lastObservedSize = { width, height };
+                    debouncedSend();
+                }
+            }
         });
 
         // Only observe the main content container, not the whole body
         const mainContent = document.querySelector('main');
         if (mainContent) {
-            console.log('[EmbedViewer] Setting up observers on <main>');
             resizeObserver.observe(mainContent);
 
             // MutationObserver catches layout switches (masonry/vertical/list)
@@ -99,7 +101,6 @@ export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerPro
             // Safe from infinite loops: parent resizing the iframe doesn't add/remove
             // nodes inside <main>, so this won't re-fire after a height update.
             mutationObserver = new MutationObserver((mutations) => {
-                console.log('[EmbedViewer] MutationObserver fired, mutations:', mutations.length);
                 debouncedSend();
             });
             mutationObserver.observe(mainContent, {
@@ -112,7 +113,6 @@ export default function EmbedViewer({ layoutMode, showMetadata }: EmbedViewerPro
 
         // Send on image loads
         const handleImageLoad = () => {
-            console.log('[EmbedViewer] Image loaded');
             setTimeout(sendHeight, 100);
         };
 

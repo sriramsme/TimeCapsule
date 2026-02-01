@@ -109,5 +109,3 @@ window
             setPreference(false); // false = system change
         }
     });
-
-console.log("themeValue", themeValue);

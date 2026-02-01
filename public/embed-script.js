@@ -15,10 +15,16 @@
 
     const MIN_HEIGHT = 200;
     const MAX_HEIGHT = 10000;
-
     function isTrustedOrigin(origin) {
-        return ALLOWED_ORIGINS.includes(origin);
+        try {
+            const originUrl = new URL(origin);
+            const allowedUrl = new URL(url);
+            return originUrl.origin === allowedUrl.origin;
+        } catch {
+            return false;
+        }
     }
+
 
     function initTimeCapsuleEmbeds() {
         const iframes = document.querySelectorAll(
@@ -40,7 +46,9 @@
             });
 
             // Set initial height to prevent layout shift
-            iframe.style.height = '400px';
+            const initialHeight = iframe.getAttribute('data-initial-height') || '400px';
+            iframe.style.height = initialHeight;
+
             iframe.style.transition = 'height 0.3s ease';
         });
 
@@ -54,6 +62,7 @@
             const { type, height } = event.data || {};
 
             if (type === 'timecapsule-resize' && typeof height === 'number') {
+
                 iframes.forEach(iframe => {
                     if (iframe.contentWindow !== event.source) return;
 
@@ -67,10 +76,11 @@
 
                     // Validate height is within reasonable bounds
                     const newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, Math.ceil(height)));
+
                     const heightDiff = Math.abs(newHeight - state.lastHeight);
 
                     // Only update if change is significant
-                    if (heightDiff > 10) {
+                    if (heightDiff > 10) {  // ← This is good, keeps it
                         state.rafId = requestAnimationFrame(() => {
                             iframe.style.height = `${newHeight}px`;
                             state.lastHeight = newHeight;
