@@ -8,11 +8,11 @@ import { SITE } from './src/config';
 // https://astro.build/config
 export default defineConfig({
     adapter: cloudflare(),
-    base: '/TimeCapsule',
     integrations: [
         react(),
     ],
     vite: {
+        base: '/',
         resolve: {
             alias: {
                 "@": "/src",
