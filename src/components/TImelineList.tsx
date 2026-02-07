@@ -30,7 +30,7 @@ export default function TimelineList() {
                 // Create empty timeline
                 await storage.saveCapsules([], id, name.trim());
                 // Navigate to new timeline
-                window.location.href = `/timeline?id=${id}`;
+                window.location.href = `timeline?id=${id}`;
             } catch (error) {
                 console.error('Failed to create timeline:', error);
                 alert('Failed to create timeline. Please try again.');
@@ -126,7 +126,7 @@ export default function TimelineList() {
                     {timelines.map((timeline) => (
                         <a
                             key={timeline.id}
-                            href={`/timeline?id=${timeline.id}`}
+                            href={`timeline?id=${timeline.id}`}
                             className="group relative bg-card border border-border rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-accent-500/10 transition-all duration-300 hover:-translate-y-1"
                         >
                             {/* Card Content */}

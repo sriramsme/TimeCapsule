@@ -62,7 +62,7 @@ export default function ImportMenuButton({ onImportSuccess }: ImportMenuButtonPr
                 }
 
                 // Navigate to the new timeline
-                window.location.href = `/timeline?id=${timelineId}`;
+                window.location.href = `timeline?id=${timelineId}`;
 
             } catch (error) {
                 console.error('Import error:', error);

@@ -8,6 +8,7 @@ import { SITE } from './src/config';
 // https://astro.build/config
 export default defineConfig({
     adapter: cloudflare(),
+    base: '/TimeCapsule',
     integrations: [
         react(),
     ],
@@ -24,4 +25,5 @@ export default defineConfig({
     },
     site: SITE.website,
     trailingSlash: "never",
+
 });

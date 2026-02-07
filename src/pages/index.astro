@@ -4,6 +4,7 @@ import TimelineList from "@/components/TImelineList";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/config";
 import GitHubStarsButton from "@/components/GithubStarsButton";
+import { asset } from "@/utils/assets";
 ---
 
 <Layout>
@@ -19,7 +20,7 @@ import GitHubStarsButton from "@/components/GithubStarsButton";
 				>
 				</div>
 				<img
-					src="/bg.webp"
+					src={asset("bg.webp")}
 					alt="Background"
 					class="w-full h-full object-cover"
 				/>

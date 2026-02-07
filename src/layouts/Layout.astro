@@ -2,7 +2,7 @@
 import { ViewTransitions } from "astro:transitions";
 import "@/styles/global.css";
 import { SITE } from "@/config";
-
+import { asset } from "@/utils/assets";
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 interface Props {
@@ -62,18 +62,18 @@ const structuredData = {
             rel="icon"
             type="image/png"
             sizes="96x96"
-            href="/favicon-96x96.png"
+            href={asset("favicon-96x96.png")}
         />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href={asset("favicon.svg")} />
+        <link rel="shortcut icon" href={asset("favicon.ico")} />
         <link
             rel="apple-touch-icon"
             sizes="180x180"
-            href="/apple-touch-icon.png"
+            href={asset("apple-touch-icon.png")}
         />
 
         <!-- Web App Manifest -->
-        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="manifest" href={asset("site.webmanifest")} />
 
         <!-- Canonical URL -->
         <link rel="canonical" href={canonicalURL} />
@@ -136,7 +136,7 @@ const structuredData = {
             set:html={JSON.stringify(structuredData)}
         />
 
-        <script is:inline src="/toggle-theme.js"></script>
+        <script is:inline src={asset("toggle-theme.js")}></script>
 
         {
             // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,

@@ -20,7 +20,7 @@ interface Site {
 
 // Site configuration
 export const SITE: Site = {
-    website: "https://timecapsule.srirams.me",
+    website: "https://labs.srirams.me/TimeCapsule",
     author: "Sriram Seelamneni",
     authorUsername: "sriramsme",
     authorUrl: "https://srirams.me",
